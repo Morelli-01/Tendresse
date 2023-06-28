@@ -1,7 +1,7 @@
 from django.db import models
 
 class Tag(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, unique=True)
     type = models.CharField(max_length=50)
 class Product(models.Model):
     title = models.CharField(max_length=100)

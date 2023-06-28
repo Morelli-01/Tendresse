@@ -14,7 +14,7 @@ const cart_element = document.getElementById('cart-element')
 
 const products = document.querySelectorAll('#container>div>span')
 
-for (const order_div of document.querySelectorAll('#container>div>order')) {
+for (const order_div of document.querySelectorAll('#container>div>.order')) {
     // console.log(order_div)
     let card_cont = order_div.querySelector('#card-container')
     // console.log(card_cont)

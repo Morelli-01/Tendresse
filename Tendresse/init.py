@@ -72,7 +72,6 @@ def create_product():
     rnd = random.Random()
     tee_tag = Tag.objects.create(name='Maglia', type='cat')
     hoodie_tag = Tag.objects.create(name='Felpa', type='cat')
-    sweatshirt_tag = Tag.objects.create(name='Felpa', type='cat')
     pant_tag = Tag.objects.create(name='Pantaloni', type='cat')
     jacket_tag = Tag.objects.create(name='Giacca', type='cat')
     violet_tag = Tag.objects.create(name='Viola', type='col')

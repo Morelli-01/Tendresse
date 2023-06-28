@@ -64,9 +64,8 @@
                     </span>
         {% endfor %}
         {% for order in orders %}
-            <order class="col-8 container row d-flex flex-column justify-content-center" id="order{{ order.id }}">
-                <div class="row border border-dark border-1 shadow d-flex flex-row flex-md-grow-1 justify-content-between m-2 p-1 mb-0"
-                     style="max-width: 600px">
+            <div class="col-12  row d-flex flex-column order align-items-center" id="order{{ order.id }}">
+                <div class="row border border-dark border-1 shadow d-flex flex-row flex-md-grow-1 justify-content-between m-2 p-1 mb-0 w-75">
 
                     <p class="col-auto mb-0">Order number: {{ order.id }}</p>
                     <span class="col-md-4"></span>
@@ -76,8 +75,8 @@
                     </p>
 
                 </div>
-                <div class="row border border-dark border-1 shadow d-flex flex-row flex-md-grow-1 justify-content-between m-2 mb-0 mt-0"
-                     style="max-width: 600px">
+                <div class="row border border-dark border-1 shadow d-flex flex-row flex-md-grow-1 justify-content-between m-2 mb-0 mt-0 w-75"
+                     >
 
 
                     <div class="card-group d-flex flex-column"
@@ -111,7 +110,7 @@
 
                 </div>
 
-            </order>
+            </div>
         {% endfor %}
         {% if orders == '' %}
             <div class="container-fluid d-flex align-items-center flex-column mt-md-5">

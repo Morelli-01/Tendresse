@@ -1,5 +1,6 @@
 import json
 
+import django.core.exceptions
 from django.db.models import QuerySet
 from django.shortcuts import render
 
@@ -10,42 +11,18 @@ from .models import *
 # Create your views here.
 def products(request):
     if request.method == 'GET':
-        # print(list(request.GET.keys()))
         if len(list(request.GET.keys())) > 0:
-            results_cat = Product.objects.all().filter(for_sale=True)
-            results_col = Product.objects.all().filter(for_sale=True)
-            requested_tags = list(request.GET.keys())
-            for req_tag in requested_tags:
-                req_tag = Tag.objects.all().get(name=req_tag)
-                if req_tag.type == 'cat':
-                    if len(results_cat) == len(Product.objects.all().filter(for_sale=True)):
-                        results_cat = Product.objects.none()
-                    results_cat = results_cat.union(results_cat,
-                                                    Product.objects.all().filter(category_tags=req_tag, for_sale=True))
-                else:
-                    if len(results_col) == len(Product.objects.all().filter(for_sale=True)):
-                        results_col = Product.objects.none()
-                    results_col = results_col.union(results_col,
-                                                    Product.objects.all().filter(color_tags=req_tag, for_sale=True))
+            ctx = filter_product(request)
 
-            results = results_cat.intersection(results_cat, results_col)
+        else:
             ctx = {
-                'products': results,
+                'products': Product.objects.all().filter(for_sale=True),
                 'cat_tags': Tag.objects.all().filter(type='cat'),
                 'col_tags': Tag.objects.all().filter(type='col'),
             }
-            return render(request, template_name='products.html', context=ctx)
-
-        ctx = {
-            'products': Product.objects.all().filter(for_sale=True),
-            'cat_tags': Tag.objects.all().filter(type='cat'),
-            'col_tags': Tag.objects.all().filter(type='col'),
-        }
-        #
-        # for t in Tag.objects.all().filter(type='cat'):
-        #     # print(t.name)
 
         return render(request, template_name='products.html', context=ctx)
+
     elif request.method == 'POST':
         ctx = {
             'products': Product.objects.all().filter(title__contains=request.POST['search-keys'], for_sale=True),
@@ -57,7 +34,10 @@ def products(request):
 
 
 def product(request, pid):
-    product = Product.objects.get(pid=pid, for_sale=True)
+    try:
+        product = Product.objects.get(pid=pid, for_sale=True)
+    except:
+        raise django.core.exceptions.BadRequest()
     av_sizes = json.loads(product.available_sizes)['sizes']
     sizes = []
     for s in av_sizes:
@@ -84,25 +64,22 @@ def products_ordered(request, type):
     if request.method == 'GET':
         results = Product.objects.none()
         if len(list(request.GET.keys())) > 0:
-            requested_tags = list(request.GET.keys())
-            for req_tag in requested_tags:
-                req_tag = Tag.objects.all().get(name=req_tag)
-                results = results.union(results, Product.objects.all().filter(color_tags=req_tag, for_sale=True))
-                results = results.union(results, Product.objects.all().filter(category_tags=req_tag, for_sale=True))
+            ctx = filter_product(request)
         else:
-            results = Product.objects.all().filter(for_sale=True)
+            ctx = {
+                'products': Product.objects.all().filter(for_sale=True),
+                'cat_tags': Tag.objects.all().filter(type='cat'),
+                'col_tags': Tag.objects.all().filter(type='col'),
+            }
 
         if type == 'price-increase':
-            products = results.order_by('price')
+            products = ctx['products'].order_by('price')
         else:
-            products = results.order_by('-price')
-        ctx = {
-            'products': products,
-            'cat_tags': Tag.objects.all().filter(type='cat'),
-            'col_tags': Tag.objects.all().filter(type='col'),
-        }
+            products = ctx['products'].order_by('-price')
+        ctx['products'] = products
 
         return render(request, template_name='products.html', context=ctx)
+
     elif request.method == 'POST':
 
         results = Product.objects.all().filter(title__contains=request.POST['search-keys'], for_sale=True)
@@ -117,3 +94,29 @@ def products_ordered(request, type):
             'col_tags': Tag.objects.all().filter(type='col'),
         }
         return render(request, template_name='products.html', context=ctx)
+
+
+def filter_product(request):
+    results_cat = Product.objects.all().filter(for_sale=True)
+    results_col = Product.objects.all().filter(for_sale=True)
+    requested_tags = list(request.GET.keys())
+    for req_tag in requested_tags:
+        req_tag = Tag.objects.all().get(name=req_tag)
+        if req_tag.type == 'cat':
+            if len(results_cat) == len(Product.objects.all().filter(for_sale=True)):
+                results_cat = Product.objects.none()
+            results_cat = results_cat.union(results_cat,
+                                            Product.objects.all().filter(category_tags=req_tag, for_sale=True))
+        else:
+            if len(results_col) == len(Product.objects.all().filter(for_sale=True)):
+                results_col = Product.objects.none()
+            results_col = results_col.union(results_col,
+                                            Product.objects.all().filter(color_tags=req_tag, for_sale=True))
+
+    results = results_cat.intersection(results_cat, results_col)
+    ctx = {
+        'products': results,
+        'cat_tags': Tag.objects.all().filter(type='cat'),
+        'col_tags': Tag.objects.all().filter(type='col'),
+    }
+    return ctx

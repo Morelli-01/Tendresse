@@ -27,7 +27,7 @@ function draw_cart() {
         prz.textContent = (product.querySelector('price').textContent * p.qty).toString() + '€'
         summary_container.querySelectorAll('div')[2].appendChild(prz)
         total += product.querySelector('price').textContent * p.qty
-        document.getElementById('total-container').textContent = total.toString() + '€'
+        document.getElementById('total-container').textContent = total.toString().substring(0,5) + '€'
 
         let rem_btn = card.querySelector('button')
         rem_btn.id = i

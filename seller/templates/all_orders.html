@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content %}
-    <div class="position-relative row d-flex flex-column align-content-center justify-content-center align-items-center ">
+    <div class="position-relative row d-flex flex-column  ">
         {% for product in products %}
             <span class="visually-hidden" id="product{{ product.pid }}">
                         <title>{{ product.title }}</title>
@@ -16,8 +16,8 @@
         {% endfor %}
 
         {% for order in orders %}
-            <order class="col-8 container row d-flex flex-column justify-content-center" id="order{{ order.id }}">
-                <div class="col-12 row border border-dark border-1 shadow d-flex flex-row flex-md-grow-1 justify-content-between m-2 p-1 mb-0">
+            <div class="col-12 container row d-flex flex-column order align-items-center" id="order{{ order.id }}">
+                <div class="col-12 row border border-dark border-1 shadow d-flex flex-row flex-md-grow-1 justify-content-between m-2 p-1 mb-0 w-75">
 
                     <p class="col-md-4 mb-0 ps-0 pe-0">Order number: {{ order.id }}</p>
                     <span class="col-md-4 p-0">{{ order.user }}</span>
@@ -29,7 +29,7 @@
 
 
                 </div>
-                <div class="col-12 row border border-dark border-1 shadow d-flex flex-column flex-md-grow-1 justify-content-between m-2 mb-0 mt-0">
+                <div class="col-12 row border border-dark border-1 shadow d-flex flex-column flex-md-grow-1 justify-content-between m-2 mb-0 mt-0 w-75">
 
 
                     <div class="col card-group d-flex flex-column"
@@ -62,7 +62,7 @@
 
                 </div>
 
-            </order>
+            </div>
         {% endfor %}
         {% if orders == '' %}
             <div class="container-fluid d-flex align-items-center flex-column mt-md-5">
@@ -70,15 +70,6 @@
             </div>
         {% endif %}
         <div class="card mb-3 visually-hidden position-absolute mt-2" id="cart-element">
-{#            <div class="position-absolute row container-fluid mt-2 p-0">#}
-{##}
-{#                <div class="col d-flex justify-content-end p-0">#}
-                    {#                <button class=" btn btn-outline-dark m-1 p-0 d-flex justify-content-center"#}
-                    {#                        style="font-family: Inter,serif; border-radius: 0" id="">#}
-                    {##}
-                    {#                </button>#}
-{#                </div>#}
-{#            </div>#}
 
             <div class="row g-0">
                 <div class="col-md-4">

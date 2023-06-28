@@ -64,7 +64,7 @@ def checkout_stage_2(request):
         checkout.confirmed = True
         checkout.save()
 
-        cart = Cart.objects.all().filter(id=checkout.cart.id).first()
+        cart = Cart.objects.all().get(id=checkout.cart.id)
         cart.checked_out = True
         cart.save()
 
