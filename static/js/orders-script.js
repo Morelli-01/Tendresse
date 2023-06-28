@@ -33,8 +33,9 @@ for (const order_div of document.querySelectorAll('#container>div>.order')) {
         card.querySelector('#feed-btn').value = p.pid
 
 
-        for (const feed of feedbacks) {
-            if (feed.pid === p.pid) {
+        for (const i in feedbacks) {
+                // console.log(feed)
+            if (feedbacks[i].pid.toString() === p.pid.toString()) {
                 card.querySelector('#feed-btn').disabled = true
                 card.querySelector('#feed-btn').textContent = 'Hai gia lasciato una recnsione per quetso oggetto'
             }

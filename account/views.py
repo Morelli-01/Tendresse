@@ -35,8 +35,8 @@ def edit_account(request):
 @login_required
 def add_address(request):
     if request.method == 'GET':
-        print(request.headers)
-        print(request.body)
+        # print(request.headers)
+        # print(request.body)
         return redirect('/account')
     if request.method == 'POST':
         # print(request.body)
@@ -60,7 +60,8 @@ def add_address(request):
             address.save()
             if 'from-checkout' in request.POST:
                 return redirect('/checkout/1')
-            return redirect('/account#edited')
+            else:
+                return redirect('/account#edited')
         except:
             print('error trying to save address')
             print(address)
@@ -80,11 +81,11 @@ def addresses_edit(request, id):
     if (request.method == 'GET'):
         ctx = {
             'addresses': Address.objects.all().filter(user_id=request.user.username),
-            'address_to_edit': Address.objects.all().filter(id=id).first()
+            'address_to_edit': Address.objects.get(id=id)
         }
         return render(request, template_name='account_address_edit.html', context=ctx)
     if (request.method == 'POST'):
-        addr_to_edit = Address.objects.all().filter(id=id).first()
+        addr_to_edit = Address.objects.get(id=id)
         addr_to_edit.name = request.POST['name']
         addr_to_edit.surname = request.POST['surname']
         addr_to_edit.line1 = request.POST['line1']
@@ -111,9 +112,8 @@ def orders(request):
             'orders': ''
         }
         return render(request, template_name='account_orders.html', context=ctx)
-    ctx = {
-        'orders': Checkout.objects.all().filter(user=request.user, confirmed=1)
-    }
+    ctx = {}
+    ctx['orders'] = Checkout.objects.all().filter(user=request.user, confirmed=1)
 
     carts = Cart.objects.all().filter(user=request.user, checked_out=1)
     ctx['carts'] = carts
@@ -153,7 +153,7 @@ def orders(request):
 @login_required
 def feedbacks(request):
     ctx = {
-        'feedbacks':Feedback.objects.all().filter(user=request.user),
+        'feedbacks': Feedback.objects.all().filter(user=request.user),
     }
     if request.method == 'POST':
         feedback_id = request.POST['feedback-id']
