@@ -1,0 +1,62 @@
+{% extends 'basics/base.html' %}
+{% block head %}
+    <script src="../static/js/login-script.js" defer></script>
+{% endblock %}
+{% block title %}
+    Accedi
+{% endblock %}
+{% block content %}
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-success" id="staticBackdropLabel"> Registrazione effettuata!
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container-fluid row position-relative border-bottom pb-5 border-dark border-opacity-25  d-flex justify-content-center"
+         style="top: 100px" id="main-container">
+        <div class="d-flex flex-column justify-content-center" style="max-width: 500px">
+            <div class="h1 text-dark d-flex justify-content-center">Accedi</div>
+            <form class="position-relative " style="top: 50px" action="/login/" method="POST">{% csrf_token %}
+                <div class="border-bottom border-dark mb-2">
+                    <label for="email" class="form-label">Indirizzo Email</label>
+                    <input type="email" class="form-control border-0 shadow-none" id="email" name="email"
+                           aria-describedby="emailHelp">
+                </div>
+                <div class="mb-3 border-bottom border-dark">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control border-0 shadow-none" id="password" name="password">
+                </div>
+                <div class="mb-3">
+                    <input type="checkbox" class="form-check-input" id="sh-checkbox">
+                    <label class="form-check-label" for="sh-checkbox" id="sh-checkbox-label">Mostra password</label>
+                </div>
+                <div class="m-2 d-flex justify-content-center ">
+                    <span class="text-danger">{{ msg }}</span>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-outline-dark mb-2 pe-5 ps-5 rounded-0"
+                            style="font-family: Inter,serif;">Accedi
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="container-fluid row position-relative" style="top: 150px">
+        <div class="d-flex justify-content-center h1 mb-5">Nuovo su Tendresse?</div>
+        <div class="d-flex justify-content-center">
+            <a href="/register">
+                <button type="Registrati" class="btn btn-outline-dark mb-2 rounded-0"
+                        style="padding-left: 100px; padding-right: 100px;font-family: Inter,serif;">Registrati
+                </button>
+            </a>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{%  extends 'account_basics/account_base.html' %}
+
+{% block content %}
+    <form class="mb-3 needs-validation novalidate" action="/account/addresses/{{ address_to_edit.id }}" method="POST">{% csrf_token %}
+        <div class="form-row d-flex flex-row justify-content-between" style="margin-bottom: inherit">
+            <div class="form-group col-md-5 ">
+                <label for="name">Nome</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="" value="{{ address_to_edit.name }}"
+                       required>
+            </div>
+            <div class="form-group col-md-5">
+                <label for="surname">Cognome</label>
+                <input type="text" class="form-control" id="surname" name="surname"
+                       placeholder="" value="{{ address_to_edit.surname }}" required>
+            </div>
+        </div>
+        <div class="form-row d-flex flex-row justify-content-center" style="margin-bottom: inherit">
+            <div class="form-group col-md-12">
+                <label for="line1">Indirizzo/Linea 1</label>
+                <input type="text" class="form-control" id="line1" name="line1"
+                       placeholder="" value="{{ address_to_edit.line1 }}" required>
+            </div>
+        </div>
+        <div class="form-row d-flex flex-row justify-content-center" style="margin-bottom: inherit">
+            <div class="form-group col-md-12">
+                <label for="line2">Indirizzo/Linea 2</label>
+                <input type="text" class="form-control" id="line2" name="line2"
+                       placeholder="" value="{{ address_to_edit.line2 }}">
+            </div>
+        </div>
+        <div class="form-row d-flex flex-row justify-content-between" style="margin-bottom: inherit">
+            <div class="form-group col-md-5">
+                <label for="city">Citta'</label>
+                <input type="text" class="form-control" id="city" name="city" placeholder="" value="{{ address_to_edit.city }}"
+                       required>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="province">Provincia(sigla)</label>
+                <input type="text" class="form-control" id="province" name="province" placeholder="" value="{{ address_to_edit.province }}"
+                       required>
+            </div>
+            <div class="form-group col-md-2">
+                <label for="zip">CAP</label>
+                <input type="text" class="form-control" id="zip" name="zip" placeholder="" value="{{ address_to_edit.zip }}" required>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Modifica Indirizzo</button>
+        <button type="submit" class="btn btn-danger" formaction="/account/addresses/delete/{{ address_to_edit.id }}">Elimina Indirizzo</button>
+    </form>
+
+{% endblock %}

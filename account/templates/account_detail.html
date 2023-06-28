@@ -1,0 +1,24 @@
+{% extends 'account_basics/account_base.html' %}
+{% block content %}
+    <form class="row g-3" action="/account/edit" method="POST" id="detail_form">{% csrf_token %}
+        <div class="col-md-6 mt-4">
+            <label for="name" class="form-label">Nome</label>
+            <input type="text" class="form-control" name="name" value="{{ user.first_name }}">
+        </div>
+        <div class="col-md-6 mt-4">
+            <label for="surname" class="form-label">Cognome</label>
+            <input type="text" class="form-control" name="surname" value="{{ user.last_name }}">
+        </div>
+        <div class="col-md-6">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" name="email" value="{{ user.email }}">
+        </div>
+        <div class="col-md-6">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" name="password" value="{{ user.password }}">
+        </div>
+        <div class="col-12 d-flex justify-content-end pe-3">
+            <button type="submit" class="btn btn-primary">Salva Modifiche</button>
+        </div>
+    </form>
+{% endblock %}

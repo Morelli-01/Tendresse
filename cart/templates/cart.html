@@ -1,0 +1,131 @@
+{% extends 'basics/base.html' %}
+{% block title %}
+    Cart
+{% endblock %}
+{% block head %}
+    <script src="../../static/js/cart-script.js" defer></script>
+    <link rel="stylesheet" href="../../static/css/my-style.css">
+    {% csrf_token %}
+{% endblock %}
+{% block content %}
+    {% if not user.is_authenticated %}
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+             aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-dark" id="staticBackdropLabel">Prima di proseguire
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="container-fluid row d-flex justify-content-center mt-3">
+                        <a href="/login" class="col-md d-flex justify-content-center text-decoration-none">
+                            <button type="submit" class="btn btn-outline-dark mb-2 pe-5 ps-5 rounded-0"
+                                    style="font-family: Inter,serif;">Accedi
+                            </button>
+                        </a>
+                        <p class="col-auto">O</p>
+                        <a href="/register" class="col-md d-flex justify-content-center text-decoration-none">
+                            <button type="submit" class="btn btn-outline-dark mb-2 pe-5 ps-5 rounded-0"
+                                    style="font-family: Inter,serif;">Registrati
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+
+    <span class="visually-hidden" id="cart">{{ cart.products }}</span>
+    {% for product in products %}
+        <span class="visually-hidden" id="cart{{ product.pid }}">
+            <title>{{ product.title }}</title>
+            <price>{{ product.price }}</price>
+            <img1>{{ product.img1 }}</img1>
+        </span>
+    {% endfor %}
+
+
+
+    <div class="position-absolute container-fluid row d-flex justify-content-center mt-md-5 p-0" id="main-container">
+        <div class="col-2"></div>
+        <div class="col-md-8 p-3 pt-3" style="background-color: #dae7ef;">
+            <h5 style="font-weight: bold" class="d-flex align-content-center">
+                <span class="col-auto material-symbols-outlined">shopping_cart</span>
+                Il mio carrello</h5>
+            <div class="card-group ms-md-5 mt-3 d-flex flex-column border-bottom border-dark border-opacity-50"
+                 id="cart-container">
+                {% if products in '' %}
+                    <div>
+                        <p>Il carrello è vuoto</p>
+                    </div>
+                {% endif %}
+
+                <div class="card mb-3 visually-hidden" style="max-width: 540px;" id="cart-element">
+                    <div class="position-absolute row container-fluid mt-2 p-0">
+
+                        <div class="col d-flex justify-content-end p-0">
+                            <button class=" btn btn-outline-dark m-1 p-0 d-flex justify-content-center"
+                                    style="font-family: Inter,serif; border-radius: 0" id="">
+                                <span class="material-symbols-outlined ">delete</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="" class="img-fluid rounded-start" alt="...">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h6 class="card-title" id="p-title"></h6>
+                                <p class="card-text mb-0 text-muted"></p>
+                                <p class="card-text mb-0 text-muted"></p>
+                                <p class="card-text mb-0 text-muted"></p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="row container-fluid d-flex justify-content-end me-0 pe-0 ms-0">
+                <div class="col-8">
+
+                </div>
+                {% if products != '' %}
+                    <div class="col-md-4 mt-2 pe-0 ms-0">
+                        <div class="row container-fluid">
+                            <h5 class="col-auto">Riepilogo</h5>
+                        </div>
+                        <div class="row container-fluid d-flex border-bottom border-dark pe-0 me-0 ms-0"
+                             id="summary-container">
+                            <div class="col-4"></div>
+                            <div class="col-6">
+                            </div>
+                            <div class="col-2 d-flex flex-column align-items-end p-0">
+                            </div>
+                        </div>
+                        <div class="row container-fluid d-flex flex-row justify-content-between mt-2 pe-0 me-0 ms-0">
+                            <span class="col-4 "></span>
+                            <h6 class="col-auto me-4 ps-1">Totale</h6>
+                            <p class="col-auto p-0" id="total-container"></p>
+                        </div>
+
+
+                        <button class="btn btn-outline-dark m-1" style="font-family: Inter,serif; border-radius: 0"
+                                id="checkout-btn">
+                            Procedi al Pagamento
+                        </button>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+        </div>
+        <div class="col-2"></div>
+    </div>
+    <input class="visually-hidden" type="text" id="user-logged" value="{{ user.is_authenticated }}">
+{% endblock %}

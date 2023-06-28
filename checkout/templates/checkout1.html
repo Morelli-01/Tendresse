@@ -1,0 +1,168 @@
+{% extends 'basics/base.html' %}
+{% block title %}
+    Checkout
+{% endblock %}
+{% block head %}
+    <script src="../../static/js/checkout-script.js" defer></script>
+    <link rel="stylesheet" href="../../static/css/checkout.css">
+    {% csrf_token %}
+{% endblock %}
+{% block content %}
+    <div class="modal fade" id="add-address" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header d-flex flex-column ">
+                    <h5 class="modal-title text-dark" id="staticBackdropLabel"> Aggiungi un indirizzo
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <form class="mb-3 needs-validation novalidate" action="/account/address/"
+                          method="POST">{% csrf_token %}
+                        <input type="text" class="form-control visually-hidden" id="from-checkout" name="from-checkout"
+                               placeholder="Nome" value="true" required>
+                        <div class="form-row d-flex flex-row justify-content-between" style="margin-bottom: inherit">
+                            <div class="form-group col-md-5 ">
+                                <label for="name">Nome</label>
+                                <input type="text" class="form-control" id="name" name="name" placeholder="Nome"
+                                       required>
+                            </div>
+                            <div class="form-group col-md-5">
+                                <label for="surname">Cognome</label>
+                                <input type="text" class="form-control" id="surname" name="surname"
+                                       placeholder="Cognome" required>
+                            </div>
+                        </div>
+                        <div class="form-row d-flex flex-row justify-content-center" style="margin-bottom: inherit">
+                            <div class="form-group col-md-12">
+                                <label for="line1">Indirizzo/Linea 1</label>
+                                <input type="text" class="form-control" id="line1" name="line1"
+                                       placeholder="Via P. Vivarelli, 10" required>
+                            </div>
+                        </div>
+                        <div class="form-row d-flex flex-row justify-content-center" style="margin-bottom: inherit">
+                            <div class="form-group col-md-12">
+                                <label for="line2">Indirizzo/Linea 2</label>
+                                <input type="text" class="form-control" id="line2" name="line2"
+                                       placeholder="Appartamento, studio, piano...">
+                            </div>
+                        </div>
+                        <div class="form-row d-flex flex-row justify-content-between" style="margin-bottom: inherit">
+                            <div class="form-group col-md-5">
+                                <label for="city">Citta'</label>
+                                <input type="text" class="form-control" id="city" name="city" placeholder="Modena"
+                                       required>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="province">Provincia(sigla)</label>
+                                <input type="text" class="form-control" id="province" name="province" placeholder="MO"
+                                       required>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label for="zip">CAP</label>
+                                <input type="text" class="form-control" id="zip" name="zip" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Salva Indirizzo</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="consegna-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-danger" id="staticBackdropLabel"> Scegli prima una consegna
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="indirizzo-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-danger" id="staticBackdropLabel"> Scegli prima una indirizzo
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="position-absolute container-fluid row d-flex justify-content-center mt-md-5 p-0" id="main-container">
+        <div class="col-2"></div>
+        <div class="col-md-8 p-3 pt-3 d-flex justify-content-center flex-column align-content-center align-items-center"
+             style="background-color: #dae7ef;">
+            <div class="container-fluid row " style="max-width: 80%">
+                <h3 style="font-weight: bold">
+                    1. Accedi
+                </h3>
+            </div>
+            <div class="container-fluid border border-dark border-2 row shadow mb-md-5" style="max-width: 80%"
+                 id="step-1">
+                <h6 class="mb-3 mt-2 d-flex align-items-center">
+                    Accesso Effettuato
+                    <span class="material-symbols-outlined">done</span>
+                </h6>
+                <p class="mb-1">{{ user.first_name }} {{ user.last_name }}</p><br>
+                <p>{{ user }}</p>
+            </div>
+
+            <div class="container-fluid row " style="max-width: 80%"><h3 style="font-weight: bold">2. Consegna</h3>
+            </div>
+            <div class="container-fluid border border-dark border-2 row shadow d-flex justify-content-center mb-md-5"
+                 style="max-width: 80%">
+                <div class="container-fluid border border-dark border-1 row shadow m-2 d-flex align-items-center"
+                     style="max-width: 80%" id="ship-1-cont">
+                    <input class="col-auto p-1 " style="height: 20px;width: 20px;" type="radio" id="ship-1">
+                    <p class="m-2 col-auto ms-0">Spedizione Standard - 10€</p>
+                </div>
+                <div class="container-fluid border border-dark border-1 row shadow m-2 d-flex align-items-center"
+                     style="max-width: 80%" id="ship-2-cont">
+                    <input class="col-auto p-1 " style="height: 20px;width: 20px;" type="radio" id="ship-2">
+                    <p class="m-2 col-auto ms-0">Ritiro in negozio - GRATIS</p>
+                </div>
+            </div>
+
+            <div class="container-fluid row " style="max-width: 80%"><h3 style="font-weight: bold">3. Indirizzo</h3>
+            </div>
+            <div class="container-fluid border border-dark border-2 row shadow d-flex "
+                 style="max-width: 80%" id="adderss-list">
+                {% for address in addresses %}
+                    <div class="col-auto p-0 ps-2 d-flex flex-row align-items-center pe-md-3 mt-3 mb-3 me-3"
+                         style="box-shadow: 0 2px 4px 0 #00000026;background-color: #e5e5e5">
+                        <input class="me-md-2" style="height: 20px;width: 20px;" type="radio" id="{{ address.id }}">
+                        <div>
+                            <span style="font-size: 14px;">{{ address.name }} {{ address.surname }}</span>
+                            <br>
+                            <span style="font-size: 14px;">{{ address.line1 }}</span>
+                        </div>
+                    </div>
+
+                {% endfor %}
+
+                <button class="col-auto p-0 ps-2 d-flex flex-row align-items-center pe-md-3 pt-3 pb-3 me-3 mb-3 mt-3 btn btn-outline-dark"
+                        style="box-shadow: 0 2px 4px 0 #00000026;border: 1px dashed black; background-color: inherit; border-radius: 0;"
+                        id="new-addr-btn" type="button">
+                    +Aggiungi un nuovo indirizzo
+                </button>
+            </div>
+
+            <div class="container-fluid row mt-md-5 pe-0 ps-0 d-flex flex-row-reverse"
+                 style="max-width: 80%">
+                <button href="/checkout/2" type="button" id="proceed-btn"
+                        class="btn btn-outline-dark m-1 pe-0 me-0 shadow border border-dark border-2"
+                        style="max-width: 300px; border-radius: 0;">
+                    Procedi al pagamento
+                </button>
+            </div>
+        </div>
+        <div class="col-2"></div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,153 @@
+{% extends 'account_basics/account_base.html' %}
+{% block other_head %}
+    <script src="/static/js/orders-script.js" defer></script>
+    <script src="https://kit.fontawesome.com/0adb953a4a.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+{% endblock %}
+
+{% block content %}
+    <div id="feedbacks" class="visually-hidden position-absolute">
+        {% for feedback in feedbacks %}
+            <span id="{{ feedback.id }}">{{ feedback.product_id }}</span>
+        {% endfor %}
+
+    </div>
+    <div class="modal fade" id="feedback-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark" id=""> Scrivi una recensione
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="" method="POST" enctype="application/json">{% csrf_token %}
+                        <input type="text" class="visually-hidden" id="pid-input" name="pid-input">
+                        <div class="row d-flex flex-column">
+                            <div class="col-auto mb-3">
+                                <div class=" row d-flex flex-row justify-content-start">
+                                    <i class="fa-regular fa-star fa-xl col-1 star" id="star1"></i>
+                                    <i class="fa-regular fa-star fa-xl col-1 star" id="star2"></i>
+                                    <i class="fa-regular fa-star fa-xl col-1 star" id="star3"></i>
+                                    <i class="fa-regular fa-star fa-xl col-1 star" id="star4"></i>
+                                    <i class="fa-regular fa-star fa-xl col-1 star" id="star5"></i>
+                                    <input type="number" class="visually-hidden" value="0" id="star-count"
+                                           name="star-count">
+                                </div>
+                            </div>
+                            <div class="form-floating mt-3 mb-2">
+                                <textarea class="form-control" placeholder="niserisci qui un commento" id="comment"
+                                          style="height: 100px" name="comment" maxlength="250"></textarea>
+                                <label for="comment">Recensione</label>
+                            </div>
+
+                            <button type="submit"
+                                    class="col-auto mt-2 btn btn-sm btn-outline-dark rounded-0 w-50 ms-3">
+                                Invia
+                                recensione
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="position-relative row d-flex flex-column align-content-center justify-content-center align-items-center ">
+
+
+        {% for product in products %}
+            <span class="visually-hidden" id="product{{ product.pid }}">
+                        <title>{{ product.title }}</title>
+                        <price>{{ product.price }}</price>
+                        <img1>{{ product.img1 }}</img1>
+                    </span>
+        {% endfor %}
+        {% for order in orders %}
+            <order class="col-8 container row d-flex flex-column justify-content-center" id="order{{ order.id }}">
+                <div class="row border border-dark border-1 shadow d-flex flex-row flex-md-grow-1 justify-content-between m-2 p-1 mb-0"
+                     style="max-width: 600px">
+
+                    <p class="col-auto mb-0">Order number: {{ order.id }}</p>
+                    <span class="col-md-4"></span>
+
+                    <p class="col-auto mb-0">Totale: {{ order.total_price }}€
+                        <i class="fa-solid fa-greater-than ms-3" id="left-arrow"></i>
+                    </p>
+
+                </div>
+                <div class="row border border-dark border-1 shadow d-flex flex-row flex-md-grow-1 justify-content-between m-2 mb-0 mt-0"
+                     style="max-width: 600px">
+
+
+                    <div class="card-group d-flex flex-column"
+                         id="card-container">
+                        {% for cart in carts %}
+                            {% if cart == order.cart %}
+                                <span class="visually-hidden" id="to-draw">{{ cart.products }}</span>
+
+                            {% endif %}
+
+                        {% endfor %}
+                    </div>
+
+                    {% for address in addresses %}
+                        {% if address == order.addr %}
+                            <address
+                                    class="p-0 ps-2 container-fluid mb-0 text-start d-flex flex-column align-items-start ms-1"
+                                    style="max-width: 200px" id="address{{ address.id }}">
+                                <h6 class="collapse">Indirizzo di spedizione:</h6>
+
+                                <span style=" font-size: 14px;"
+                                      class="collapse">{{ address.name }} {{ address.surname }}</span>
+                                <span style=" font-size: 14px;" class="collapse">{{ address.line1 }}</span>
+                                <span style=" font-size: 14px;"
+                                      class="collapse">{{ address.city }}, {{ address.zip }}</span>
+
+                            </address>
+                        {% endif %}
+                    {% endfor %}
+
+
+                </div>
+
+            </order>
+        {% endfor %}
+        {% if orders == '' %}
+            <div class="container-fluid d-flex align-items-center flex-column mt-md-5">
+                <h5 class="col-auto">Non hai ancora effettuato alcun ordine</h5>
+            </div>
+        {% endif %}
+        <div class="card mb-3 visually-hidden position-absolute" style="max-width: 540px;" id="cart-element">
+            <div class="position-absolute row container-fluid mt-2 p-0">
+
+                <div class="col d-flex justify-content-end p-0">
+                    {#                <button class=" btn btn-outline-dark m-1 p-0 d-flex justify-content-center"#}
+                    {#                        style="font-family: Inter,serif; border-radius: 0" id="">#}
+                    {##}
+                    {#                </button>#}
+                </div>
+            </div>
+
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <img src="" class="img-fluid rounded-start" alt="...">
+                </div>
+                <div class="col-md-5">
+                    <div class="card-body">
+                        <h6 class="card-title" id="p-title"></h6>
+                        <p class="card-text mb-0 text-muted"></p>
+                        <p class="card-text mb-0 text-muted"></p>
+                        <p class="card-text mb-0 text-muted"></p>
+                    </div>
+                </div>
+
+                <div class="col-md-3 d-flex align-items-end">
+                    <button class="btn btn-sm btn-outline-dark m-2" id="feed-btn">Scrivi una recensione</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+

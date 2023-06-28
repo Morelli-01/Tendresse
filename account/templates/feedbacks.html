@@ -1,0 +1,67 @@
+{% extends 'account_basics/account_base.html' %}
+{% block other_head %}
+    <script src="https://kit.fontawesome.com/0adb953a4a.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="/static/js/feedbacks-script.js" defer></script>
+{% endblock %}
+{% block content %}
+
+    <div id="carouselExampleIndicators" class="carousel slide w-100 " data-bs-interval="false">
+        <div class="row " style="width: 100%">
+            <div class="carousel-inner col ms-md-4 ps-2 ">
+                {% for feedback in feedbacks %}
+
+                    <div class="carousel-item">
+                        <div class="card m-4" style="max-width: 100%;">
+                            <div class="row g-0">
+                                <div class="col-md-4">
+                                    <img src="/static/images/{{ feedback.product.img1 }}"
+                                         class="img-fluid rounded-start" alt="...">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <div class="row d-flex ">
+                                            <h5 class="card-title col-auto">{{ feedback.product.title }}</h5>
+                                            <form action="" method="POST" class="col-auto">
+                                                <button class="btn btn-outline-danger" type="submit">
+                                                    {% csrf_token %}
+                                                    <input type="text" name="feedback-id" value="{{ feedback.id }}" class="visually-hidden">
+                                                    <i class="fa-regular fa-trash-can"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+
+                                        <p class="card-text">{{ feedback.comment }}</p>
+                                        <div class="col-auto d-flex justify-content-start mt-3" id="stars-container">
+                                            <span class="visually-hidden" id="n-star">{{ feedback.stars }}</span>
+                                            <i class="fa-regular fa-star fa-xl col-1 star " id="star1"></i>
+                                            <i class="fa-regular fa-star fa-xl col-1 star " id="star2"></i>
+                                            <i class="fa-regular fa-star fa-xl col-1 star " id="star3"></i>
+                                            <i class="fa-regular fa-star fa-xl col-1 star " id="star4"></i>
+                                            <i class="fa-regular fa-star fa-xl col-1 star " id="star5"></i>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+
+                <button class="carousel-control-prev btn-dark" type="button" data-bs-target="#carouselExampleIndicators"
+                        data-bs-slide="prev">
+                    <i class="fa-solid fa-less-than" style="color: black"></i>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                        data-bs-slide="next">
+                    <i class="fa-solid fa-greater-than" style="color: black"></i>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+
+
+        </div>
+    </div>
+{% endblock %}
