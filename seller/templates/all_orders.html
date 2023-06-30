@@ -20,7 +20,7 @@
                 <div class="col-12 row border border-dark border-1 shadow d-flex flex-row flex-md-grow-1 justify-content-between m-2 p-1 mb-0 w-75">
 
                     <p class="col-md-4 mb-0 ps-0 pe-0">Order number: {{ order.id }}</p>
-                    <span class="col-md-4 p-0">{{ order.user }}</span>
+                    <span class="col-md-4 p-0">{{ order.cart.user }}</span>
 
                     <div class="col-4 row d-flex flex-row align-items-center">
                         <p class="col-11 mb-0 p-0 pe-2 text-end">Totale: {{ order.total_price }}€</p>
@@ -31,33 +31,47 @@
                 </div>
                 <div class="col-12 row border border-dark border-1 shadow d-flex flex-column flex-md-grow-1 justify-content-between m-2 mb-0 mt-0 w-75">
 
-
-                    <div class="col card-group d-flex flex-column"
+                    <div class="card-group d-flex flex-column"
                          id="card-container">
-                        {% for cart in carts %}
-                            {% if cart == order.cart %}
-                                <span class="visually-hidden" id="to-draw">{{ cart.products }}</span>
-
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                    <div class="col">
-                        {% for address in addresses %}
-                            {% if address == order.addr %}
-                                <div
-                                        class="p-0 ps-2 container-fluid mb-0 text-start d-flex flex-column align-items-start ms-1"
-                                        style="max-width: 200px" id="address{{ address.id }}">
-                                    <h6 class="collapse address">Indirizzo di spedizione:</h6>
-
-                                    <span style=" font-size: 14px;"
-                                          class="collapse address">{{ address.name }} {{ address.surname }}</span>
-                                    <span style=" font-size: 14px;" class="collapse address">{{ address.line1 }}</span>
-                                    <span style=" font-size: 14px;"
-                                          class="collapse address">{{ address.city }}, {{ address.zip }}</span>
+                        {% for p in order.cart.products_in_cart.select_related %}
+                            <div class="card mt-3 collapse" style="max-width: 540px;"
+                                 id="cart-element">
+                                <div class="position-absolute row container-fluid mt-2 p-0">
 
                                 </div>
-                            {% endif %}
+
+                                <div class="row g-0">
+                                    <a class="col-md-4 text-decoration-none text-dark" href="/product/{{ p.product.pid }}">
+                                        <img src="/static/images/{{ p.product.img1 }}" class="img-fluid rounded-start"
+                                             alt="...">
+                                    </a>
+                                    <div class="col-md-5">
+                                        <div class="card-body">
+                                            <h6 class="card-title" id="p-title">{{ p.product.title }}</h6>
+                                            <p class="card-text mb-0 text-muted">Taglia: {{ p.size }}</p>
+                                            <p class="card-text mb-0 text-muted">Prezzo: {{ p.product.price }}€</p>
+                                            <p class="card-text mb-0 text-muted">Quantità: {{ p.qty }}</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
                         {% endfor %}
+                    </div>
+
+                    <div class="col">
+                        <div
+                                class="p-0 ps-2 container-fluid mb-0 text-start d-flex flex-column align-items-start ms-1 address"
+                                style="max-width: 200px" id="address{{ order.addr.id }}">
+                            <h6 class="collapse address">Indirizzo di spedizione:</h6>
+
+                            <span style=" font-size: 14px;"
+                                  class="collapse address">{{ order.addr.name }} {{ order.addr.surname }}</span>
+                            <span style=" font-size: 14px;" class="collapse address">{{ order.addr.line1 }}</span>
+                            <span style=" font-size: 14px;"
+                                  class="collapse address">{{ order.addr.city }}, {{ order.addr.zip }}</span>
+
+                        </div>
                     </div>
 
                 </div>
@@ -66,25 +80,10 @@
         {% endfor %}
         {% if orders == '' %}
             <div class="container-fluid d-flex align-items-center flex-column mt-md-5">
-                <h5 class="col-auto">Non hai ancora effettuato alcun ordine</h5>
+                <h5 class="col-auto">Non sono ancora stati effettuati ordini</h5>
             </div>
         {% endif %}
-        <div class="card mb-3 visually-hidden position-absolute mt-2" id="cart-element">
 
-            <div class="row g-0">
-                <div class="col-md-4">
-                    <img src="" class="img-fluid rounded-start" alt="...">
-                </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <h6 class="card-title" id="p-title"></h6>
-                        <p class="card-text mb-0 text-muted"></p>
-                        <p class="card-text mb-0 text-muted"></p>
-                        <p class="card-text mb-0 text-muted"></p>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 {% endblock %}
 

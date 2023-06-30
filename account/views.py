@@ -107,34 +107,14 @@ def addresses_delete(request, id):
 
 @login_required
 def orders(request):
-    if not Checkout.objects.all().filter(user=request.user, confirmed=1).exists():
+    if not Checkout.objects.all().filter(cart__user=request.user, confirmed=1).exists():
         ctx = {
             'orders': ''
         }
         return render(request, template_name='account_orders.html', context=ctx)
     ctx = {}
-    ctx['orders'] = Checkout.objects.all().filter(user=request.user, confirmed=1)
+    ctx['orders'] = Checkout.objects.all().filter(cart__user=request.user, confirmed=1)
 
-    carts = Cart.objects.all().filter(user=request.user, checked_out=1)
-    ctx['carts'] = carts
-
-    qset = Product.objects.none()
-    pids = []
-    for cart in carts:
-        products = json.loads(cart.products)
-        for p in products:
-            if not pids.__contains__(products[p]['pid']):
-                pids.append(products[p]['pid'])
-
-    # print(pids)
-    for pid in pids:
-        prods = Product.objects.all().filter(pid=pid)
-        qset = qset.union(qset, prods)
-
-    ctx['products'] = qset
-    # print(ctx)
-
-    ctx['addresses'] = Address.objects.all().filter(user=request.user)
     ctx['feedbacks'] = Feedback.objects.all().filter(user=request.user)
 
     if request.method == 'POST':
@@ -145,6 +125,7 @@ def orders(request):
         feed.comment = request.POST['comment']
         feed.stars = int(request.POST['star-count'])
         try:
+            check_order_existence(feed)
             feed.save()
         except:
             redirect(to='/account/order#feed_err')
@@ -160,3 +141,8 @@ def feedbacks(request):
         Feedback.objects.get(id=feedback_id).delete()
 
     return render(request, template_name='feedbacks.html', context=ctx)
+
+
+def check_order_existence(feed):
+    if not Checkout.objects.all().filter(cart__user=feed.user).exists():
+        raise AttributeError()

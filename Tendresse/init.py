@@ -5,7 +5,7 @@ import random
 from django.contrib.auth.models import User
 
 from account.models import Address, Feedback
-from cart.models import Cart
+from cart.models import Cart, Product_in_Cart
 from checkout.models import Checkout
 from product.models import *
 from seller.models import Stats
@@ -21,11 +21,11 @@ def populate_product():
     Tag.objects.all().delete()
     Checkout.objects.all().delete()
     Cart.objects.all().delete()
-    # User.objects.all().delete()
+    User.objects.all().delete()
     Address.objects.all().delete()
     Feedback.objects.all().delete()
 
-    # create_users()
+    create_users()
     create_product()
     create_address()
     create_cart()
@@ -39,7 +39,6 @@ def create_users():
     base_mail = '@gmail.com'
     sha256_hash = hashlib.sha256()
 
-    users = []
     rnd = random.Random()
     for i in range(15):
         name = names[rnd.randint(0, 9)].capitalize()
@@ -52,6 +51,8 @@ def create_users():
             User(first_name=name, last_name=surname, email=mail, username=mail, password=psw).save()
         except:
             continue
+    User(first_name='Nicola', last_name='Morelli', email='nicolamorelli@jemore.it', username='nicolamorelli@jemore.it', password='sudo', is_staff=True).save()
+
 
 
 def create_product():
@@ -273,20 +274,21 @@ def create_cart():
 
     for i in range(50):
         cart = Cart()
-        cart.user = User.objects.all()[rnd.randint(0, User.objects.all().count() - 1)]
+        cart.user = User.objects.all()[random.Random().randint(0, (User.objects.all().count() - 1))]
+        cart.save()
         products = {}
         for i in range(rnd.randint(1, 5)):
             product = Product.objects.all()[rnd.randint(0, Product.objects.all().count() - 1)]
             qty = rnd.randint(1, 5)
             size = sizes[rnd.randint(0, 4)]
-            p = {
-                'pid': product.pid,
-                'qty': str(qty),
-                'size': size
-            }
-            products[i] = p
+            prod_in_cart = Product_in_Cart()
+            prod_in_cart.product = product
+            prod_in_cart.size = size
+            prod_in_cart.qty = qty
+            prod_in_cart.save()
+            cart.products_in_cart.add(prod_in_cart)
 
-        cart.products = json.dumps(products)
+
         cart.checked_out = False
         cart.save()
 
@@ -300,10 +302,9 @@ def create_checkout():
         checkout.user = cart.user
         checkout.addr = Address.objects.get(user=checkout.user)
         prezzo_finale = 0
-        products = json.loads(checkout.cart.products)
-        for i in products:
-            prezzo_finale += int(products[i]['qty']) * float(
-                Product.objects.all().filter(pid=products[i]['pid']).first().price)
+        products = checkout.cart.products_in_cart
+        for prod_in_cart in products.all():
+            prezzo_finale += prod_in_cart.product.price*prod_in_cart.qty
         if checkout.ship_method == 'standard':
             prezzo_finale += 10
         checkout.total_price = float(str(prezzo_finale)[0:5])
@@ -317,12 +318,14 @@ def create_checkout():
 
 
 def decrease_availability(cart: Cart):
-    products = json.loads(cart.products)
-    for i in products:
-        qty_to_remove = products[i]['qty']
-        size_to_remove = products[i]['size']
+    products = cart.products_in_cart.all()
+    for prod_in_cart in products:
+        qty_to_remove = prod_in_cart.qty
+        size_to_remove = prod_in_cart.size
 
-        pid = products[i]['pid']
+
+
+        pid = prod_in_cart.product.pid
         p = Product.objects.get(pid=pid)
         availability = json.loads(p.available_sizes)
         if size_to_remove == 'XS':
@@ -351,18 +354,15 @@ def create_feedbacks():
     ]
 
     for u in User.objects.all():
-        for check in Checkout.objects.all().filter(user=u):
+        for check in Checkout.objects.all().filter(cart__user=u):
             cart = check.cart
-            products = json.loads(cart.products)
-            # print(products)
-            for i in products:
-                # print(i)
+            products = cart.products_in_cart.all()
+            for prod_in_cart in products:
                 feed = Feedback()
-                feed.product = Product.objects.get(pid=products[i]['pid'])
+                feed.product = Product.objects.get(pid=prod_in_cart.product.pid)
                 feed.user = u
                 rnd = random.Random().randint(0, 5)
                 feed.stars = rnd
-                # print(comments_pool[int(rnd)])
                 feed.comment = comments_pool[int(rnd)]
                 try:
                     feed.save()

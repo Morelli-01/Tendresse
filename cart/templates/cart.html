@@ -37,7 +37,11 @@
     {% endif %}
 
 
-    <span class="visually-hidden" id="cart">{{ cart.products }}</span>
+    <span class="visually-hidden" id="cart">{{ products_in_cart }}</span>
+    {% for p in products_in_cart %}
+        <span class="visually-hidden" id="cart">{{ p.product.title }}</span>
+    {% endfor %}
+
     {% for product in products %}
         <span class="visually-hidden" id="cart{{ product.pid }}">
             <title>{{ product.title }}</title>
@@ -56,61 +60,82 @@
                 Il mio carrello</h5>
             <div class="card-group ms-md-5 mt-3 d-flex flex-column border-bottom border-dark border-opacity-50"
                  id="cart-container">
-                {% if products in '' %}
+                {% if not products_in_cart %}
                     <div>
                         <p>Il carrello è vuoto</p>
                     </div>
                 {% endif %}
+                {% for product_in_cart in products_in_cart %}
+                    <div class="card mb-3 " style="max-width: 540px;" id="cart-element">
+                        <div class="position-absolute row container-fluid mt-2 p-0">
 
-                <div class="card mb-3 visually-hidden" style="max-width: 540px;" id="cart-element">
-                    <div class="position-absolute row container-fluid mt-2 p-0">
-
-                        <div class="col d-flex justify-content-end p-0">
-                            <button class=" btn btn-outline-dark m-1 p-0 d-flex justify-content-center"
-                                    style="font-family: Inter,serif; border-radius: 0" id="">
-                                <span class="material-symbols-outlined ">delete</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="row g-0">
-                        <div class="col-md-4">
-                            <img src="" class="img-fluid rounded-start" alt="...">
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h6 class="card-title" id="p-title"></h6>
-                                <p class="card-text mb-0 text-muted"></p>
-                                <p class="card-text mb-0 text-muted"></p>
-                                <p class="card-text mb-0 text-muted"></p>
+                            <div class="col d-flex justify-content-end p-0">
+                                <button class=" btn btn-outline-dark m-1 p-0 d-flex justify-content-center rm-btn"
+                                        style="font-family: Inter,serif; border-radius: 0"
+                                        value="{{ product_in_cart.id }}">
+                                    <span class="material-symbols-outlined">delete</span>
+                                </button>
                             </div>
                         </div>
+
+                        <div class="row g-0">
+                            <div class="col-md-4">
+                                <img src="/static/images/{{ product_in_cart.product.img1 }}"
+                                     class="img-fluid rounded-start" alt="">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h6 class="card-title" id="p-title">{{ product_in_cart.product.title }}</h6>
+                                    <p class="card-text mb-0 text-muted">Taglia: {{ product_in_cart.size }}</p>
+                                    <p class="card-text mb-0 text-muted">
+                                        Prezzo: {{ product_in_cart.product.price }}€</p>
+                                    <p class="card-text mb-0 text-muted">Quantità: {{ product_in_cart.qty }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+
                     </div>
+                {% endfor %}
 
-
-                </div>
             </div>
             <div class="row container-fluid d-flex justify-content-end me-0 pe-0 ms-0">
                 <div class="col-8">
 
                 </div>
-                {% if products != '' %}
+                {% if products_in_cart %}
                     <div class="col-md-4 mt-2 pe-0 ms-0">
                         <div class="row container-fluid">
                             <h5 class="col-auto">Riepilogo</h5>
                         </div>
                         <div class="row container-fluid d-flex border-bottom border-dark pe-0 me-0 ms-0"
-                             id="summary-container">
+                        >
                             <div class="col-4"></div>
                             <div class="col-6">
+                                {% for product_in_cart in products_in_cart %}
+                                    <p>{{ product_in_cart.product.title }}</p>
+
+                                {% endfor %}
+
+
                             </div>
                             <div class="col-2 d-flex flex-column align-items-end p-0">
+                                {% for product_in_cart in products_in_cart %}
+                                    <div id="summary-container">
+                                        <p class="visually-hidden">{{ product_in_cart.product.price }}</p>
+                                        <p class="visually-hidden">{{ product_in_cart.qty }}</p>
+                                        <p></p>
+                                    </div>
+                                {% endfor %}
+
                             </div>
                         </div>
                         <div class="row container-fluid d-flex flex-row justify-content-between mt-2 pe-0 me-0 ms-0">
                             <span class="col-4 "></span>
                             <h6 class="col-auto me-4 ps-1">Totale</h6>
-                            <p class="col-auto p-0" id="total-container"></p>
+                            <p class="col-auto p-0" id="total-container">
+
+                            </p>
                         </div>
 
 

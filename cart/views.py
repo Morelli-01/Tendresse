@@ -6,7 +6,7 @@ from django.db.models import QuerySet
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
-from cart.models import Cart
+from cart.models import Cart, Product_in_Cart
 from product.models import Product
 
 
@@ -15,7 +15,6 @@ from product.models import Product
 def cart(request):
     ctx = {
         'cart': '',
-        'products': '',
     }
     if request.user.is_authenticated:
         if not Cart.objects.all().filter(user=request.user, checked_out=0).exists():
@@ -36,15 +35,10 @@ def cart(request):
         cart.validity = datetime.date.today() + datetime.timedelta(days=2)
         ctx['cart'] = cart
 
-    qset = Product.objects.none()
-    results = []
 
-    prod_cart = json.loads(cart.products)
-    for p in prod_cart:
-        p = prod_cart[p]
-        qset = qset.union(qset, Product.objects.all().filter(pid=p['pid']))
+    products = cart.products_in_cart.all()
+    ctx['products_in_cart']=products
 
-    ctx['products'] = qset
     return render(request, template_name='cart.html', context=ctx)
 
 
@@ -53,99 +47,43 @@ def atc(request):
         raise exceptions.BadRequest("Method not allowed")
     elif request.method == 'POST':
         cart = fetch_cart(request)
-
+        cart.save()
         payload = json.loads(request.body)
         if not check_size_availability(payload):
             return HttpResponse(status=406)
-        if cart.products:
-            product_cart = json.loads(cart.products)
-            for p in product_cart:
-                if product_cart[p]['pid'] == payload['pid'] and product_cart[p]['size'] == payload['size']:
-                    product_cart[p]['qty'] = str(int(product_cart[p]['qty']) + int(payload['qty']))
-                    payload = ''
 
-            if not payload == '':
-                product_cart[str(len(product_cart.keys()))] = payload
-            cart.products = json.dumps(product_cart)
-        else:
-            product_cart = cart.products = json.dumps({
-                '0': payload
-            })
+        prod_in_cart = Product_in_Cart()
+        prod_in_cart.product = Product.objects.get(pid=payload['pid'])
+        prod_in_cart.qty = payload['qty']
+        prod_in_cart.size = payload['size']
+        prod_in_cart.save()
+        to_be_added = True
+        for pc in cart.products_in_cart.all():
+            if pc.product == prod_in_cart.product and pc.size == prod_in_cart.size:
+                pc.qty += prod_in_cart.qty
+                pc.save()
+                to_be_added = False
+        if to_be_added:
+
+            cart.products_in_cart.add(prod_in_cart)
+
         cart.save()
-    return HttpResponse(status=201)
 
-    # if request.method == 'POST':
-    #     cart = fetch_cart(request)
-    #
-    #     payload = json.loads(request.body)
-    #
-    #     if not check_size_availability(payload):
-    #         return HttpResponse(status=406)
-    #
-    #     if request.user.is_authenticated:
-    #         if Cart.objects.all().filter(user=request.user, checked_out=0).exists():
-    #             cart = Cart.objects.all().filter(user=request.user, checked_out=0).first()
-    #         else:
-    #             cart.user = request.user
-    #     else:
-    #         if Cart.objects.all().filter(ip=request.META.get('REMOTE_ADDR'), checked_out=0).exists():
-    #             cart = Cart.objects.all().filter(ip=request.META.get('REMOTE_ADDR'), checked_out=0).first()
-    #
-    #             if not check_cart_validity(cart):
-    #                 cart.delete()
-    #                 cart = Cart()
-    #                 cart.ip = request.META.get('REMOTE_ADDR')
-    #
-    #             cart.validity = datetime.date.today() + datetime.timedelta(days=2)
-    #
-    #         else:
-    #             cart.validity = datetime.date.today() + datetime.timedelta(days=2)
-    #             cart.ip = request.META.get('REMOTE_ADDR')
-    #
-    # if cart.products:
-    #     product_cart = json.loads(cart.products)
-    # else:
-    #     product_cart = {}
-    # if cart.products:
-    #     for p in product_cart:
-    #         if product_cart[p]['pid'] == payload['pid'] and product_cart[p]['size'] == payload['size']:
-    #             product_cart[p]['qty'] = str(int(product_cart[p]['qty']) + int(payload['qty']))
-    #             payload = ''
-    #
-    #     if not payload == '':
-    #         product_cart[str(len(product_cart.keys()))] = payload
-    #
-    #     cart.products = json.dumps(product_cart)
-    # else:
-    #     cart.products = json.dumps({
-    #         '0': payload
-    #     })
-    # cart.save()
-    #
-    # return HttpResponse(status=201)
+    return HttpResponse(status=201)
 
 
 def rfc(request):
     if request.method == 'GET':
         raise exceptions.BadRequest("Method not allowed")
-    # print(json.loads(request.body))
-    index = json.loads(request.body)['product_index']
+    payload = json.loads(request.body)
+    pic = payload['pic']
+
     if request.user.is_authenticated:
-        cart = Cart.objects.all().filter(user=request.user, checked_out=0).first()
+        cart = Cart.objects.all().get(user=request.user, checked_out=0)
     else:
-        cart = Cart.objects.all().filter(ip=request.META.get('REMOTE_ADDR'), checked_out=0).first()
+        cart = Cart.objects.all().get(ip=request.META.get('REMOTE_ADDR'), checked_out=0)
 
-    p = json.loads(cart.products)
-
-    product_cart = {}
-    flag = 0
-    for i in p:
-        if i == index:
-            flag = -1
-            continue
-        product_cart[str(int(i) + flag)] = p[i]
-
-    cart.products = json.dumps(product_cart)
+    cart.products_in_cart.get(id=pic).delete()
     cart.save()
 
     return HttpResponse(status=204)
@@ -155,10 +93,11 @@ def get_n_items(request):
     if request.method == 'GET':
         try:
             cart = fetch_cart(request)
-            n_items = len(json.loads(cart.products))
+            n_items = cart.products_in_cart.all().count()
             return HttpResponse(str(n_items))
         except:
             return HttpResponse('0')
+
 
 def check_cart_validity(cart: Cart):
     # print(cart.validity.date())
@@ -200,7 +139,8 @@ def fetch_cart(request):
 
         else:
             cart = Cart()
-            cart.products = '   {}'
+            cart.ip = request.META.get('REMOTE_ADDR')
+            cart.products = '{}'
 
         cart.validity = datetime.date.today() + datetime.timedelta(days=2)
         return cart
