@@ -6,13 +6,13 @@
 {% endblock %}
 {% block content %}
     <div class="container-fluid row d-flex justify-content-center mt-5 pt-2 pe-0" id="main-container">
-        <div class="col-auto d-flex flex-column d-none d-lg-block p-0">
+        <div class="col-2 d-flex flex-column d-none d-lg-block p-0">
             <div class="row mt-5"></div>
             <div class="row mt-5"></div>
             <div class="row mt-5"></div>
             <div class="row mt-5 mb-2"></div>
             <div class="row g-4 d-flex justify-content-lg-center flex-column ">
-                <form action="">
+                <form action="" class="p-0">
                     <h5 class="col p-0">Filtra prodotti</h5>
                     <div class="container-fluid border border-dark p-0 ms-1 row">
                         <div class="btn btn-outline-dark p-0 rounded-0 w-100" id="filter-cat-btn">
@@ -59,7 +59,7 @@
 
         </div>
 
-        <div class="col-10 row row-cols-md-4 g-4 d-flex justify-content-center mt-5 pt-2 ">
+        <div class="col-10 row row-cols-md-4 g-4 d-flex justify-content-center mt-5 pt-2 ps-0">
             <h2 class="w-100">Prodotti</h2>
             <div class=" row w-100 mb-1 d-flex flex-row justify-content-between">
                 <form class="col-auto" action="" method="POST">{% csrf_token %}
