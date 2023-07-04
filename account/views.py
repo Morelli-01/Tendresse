@@ -118,14 +118,15 @@ def orders(request):
     ctx['feedbacks'] = Feedback.objects.all().filter(user=request.user)
 
     if request.method == 'POST':
-        print(request.body)
         feed = Feedback()
         feed.user = request.user
         feed.product = Product.objects.get(pid=request.POST['pid-input'])
         feed.comment = request.POST['comment']
         feed.stars = int(request.POST['star-count'])
+        if not check_order_existence(feed):
+            return HttpResponse(status=400)
         try:
-            check_order_existence(feed)
+
             feed.save()
         except:
             redirect(to='/account/order#feed_err')
@@ -144,5 +145,4 @@ def feedbacks(request):
 
 
 def check_order_existence(feed):
-    if not Checkout.objects.all().filter(cart__user=feed.user).exists():
-        raise AttributeError()
+    return Checkout.objects.all().filter(cart__user=feed.user, cart__products_in_cart__product=feed.product).exists()

@@ -30,4 +30,4 @@ urlpatterns = [
     path('checkout/', include('checkout.urls')),
 ]
 # dump_db_users()
-# populate_product()
+populate_product()

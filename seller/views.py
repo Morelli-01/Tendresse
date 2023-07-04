@@ -118,12 +118,8 @@ def rm_product(request):
 @login_required
 def all_orders(request):
     if request.user.is_staff and request.method == 'GET':
-        # if request.method == 'GET':
         ctx = {
             'orders': Checkout.objects.all(),
-            'carts': Cart.objects.all(),
-            'products': Product.objects.all(),
-            'addresses': Address.objects.all()
         }
         return render(request, template_name='all_orders.html', context=ctx)
     else:
@@ -142,7 +138,6 @@ def stats(request):
             stats.save()
 
         ctx = {
-            'products': Product.objects.all(),
             'stats':Stats.objects.all()
         }
 

@@ -8,9 +8,7 @@ def main():
     # os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Tendresse.settings')
     # django.setup()
 
-    logging.basicConfig(level=logging.INFO,  # Imposta il livello di gravità minimo per i messaggi di log
-                        format='%(asctime)s %(levelname)s: %(message)s',  # Formato del messaggio di log
-                        datefmt='%Y-%m-%d %H:%M:%S')
+
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Tendresse.settings')
     try:

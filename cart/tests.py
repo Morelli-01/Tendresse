@@ -18,6 +18,7 @@ class AddProductToCartViewsTest(TestCase):
                 'qty': '1',
                 'size': 'S'
             })
+            # print(self.client.post('/cart/atc/', content_type='application/json', data=payload))
             self.assertEqual(self.client.post('/cart/atc/', content_type='application/json', data=payload).status_code,
                              201)
 

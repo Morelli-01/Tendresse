@@ -76,7 +76,8 @@
                                 </div>
 
                                 <div class="row g-0">
-                                    <a class="col-md-4 text-decoration-none text-dark" href="/product/{{ p.product.pid }}">
+                                    <a class="col-md-4 text-decoration-none text-dark"
+                                       href="/product/{{ p.product.pid }}">
                                         <img src="/static/images/{{ p.product.img1 }}" class="img-fluid rounded-start"
                                              alt="...">
                                     </a>
@@ -106,7 +107,7 @@
                             </div>
                         {% endfor %}
 
-                    <div
+                        <div
                                 class="p-0 ps-2 container-fluid mb-0 text-start d-flex flex-column align-items-start ms-1 address"
                                 style="max-width: 200px" id="address{{ order.addr.id }}">
                             <h6 class="collapse address">Indirizzo di spedizione:</h6>
@@ -120,6 +121,8 @@
                         </div>
 
 
+                    </div>
+                </div>
             </div>
         {% endfor %}
         {% if orders == '' %}

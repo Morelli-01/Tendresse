@@ -6,15 +6,7 @@
 {% endblock %}
 {% block content %}
     <span class="visually-hidden"></span>
-    <div id="carouselExampleIndicators" class="carousel slide w-100 " data-bs-interval="false">
-        {#        <div class="carousel-indicators">#}
-        {#            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"#}
-        {#                    aria-current="true" aria-label="Slide 1"></button>#}
-        {#            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"#}
-        {#                    aria-label="Slide 2"></button>#}
-        {#            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"#}
-        {#                    aria-label="Slide 3"></button>#}
-        {#        </div>#}
+    <div id="carouselExampleIndicators" class="carousel slide w-100 d-flex justify-content-center " data-bs-interval="false">
         <div class="row " style="width: 100%">
             <div class="carousel-inner col ms-md-4 ps-2 ">
                 {% for stat in stats %}
@@ -37,12 +29,12 @@
                                         <p class="card-text mb-4">Numero di feedback lasciti: {{ stat.n_feedback }}</p>
                                         <div class="col-auto d-flex justify-content-start align-items-center mt-3" id="stars-container">
                                             <span class="visually-hidden" id="n-star">{{ product.pid }}</span>
-                                            <i class="fa-regular fa-star fa-xl col-1 star" id="star1"> </i>
-                                            <i class="fa-regular fa-star fa-xl col-1 star " id="star2"></i>
-                                            <i class="fa-regular fa-star fa-xl col-1 star " id="star3"></i>
-                                            <i class="fa-regular fa-star fa-xl col-1 star " id="star4"></i>
-                                            <i class="fa-regular fa-star fa-xl col-1 star " id="star5"></i>
-                                            <p class="mb-0">{{ stat.avg_stars }}</p>
+                                            <i class="fa-regular fa-star fa-xl col-1 star me-2 me-md-0" id="star1"> </i>
+                                            <i class="fa-regular fa-star fa-xl col-1 star me-2 me-md-0" id="star2"></i>
+                                            <i class="fa-regular fa-star fa-xl col-1 star me-2 me-md-0" id="star3"></i>
+                                            <i class="fa-regular fa-star fa-xl col-1 star me-2 me-md-0" id="star4"></i>
+                                            <i class="fa-regular fa-star fa-xl col-1 star me-2 me-md-0" id="star5"></i>
+                                            <p class="mb-0 ms-2 ms-md-0">{{ stat.avg_stars }}</p>
                                         </div>
                                     </div>
                                 </div>

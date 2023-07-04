@@ -60,7 +60,7 @@ def atc(request):
         to_be_added = True
         for pc in cart.products_in_cart.all():
             if pc.product == prod_in_cart.product and pc.size == prod_in_cart.size:
-                pc.qty += prod_in_cart.qty
+                pc.qty += int(prod_in_cart.qty)
                 pc.save()
                 to_be_added = False
         if to_be_added:
