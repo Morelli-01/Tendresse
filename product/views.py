@@ -37,7 +37,7 @@ def product(request, pid):
     try:
         product = Product.objects.get(pid=pid, for_sale=True)
     except:
-        raise django.core.exceptions.BadRequest()
+        raise django.core.exceptions.BadRequest(format(f'Product with pid: {pid} doesn\'t exist or is not available for sale'))
     av_sizes = json.loads(product.available_sizes)['sizes']
     sizes = []
     for s in av_sizes:
@@ -45,11 +45,12 @@ def product(request, pid):
     # print(sizes)
     related_prod = Product.objects.none()
     for tag in product.category_tags.all():
-        related_prod = related_prod.union(related_prod, Product.objects.all().filter(category_tags=tag, for_sale=True))
+        related_prod = related_prod.union(Product.objects.all().filter(category_tags=tag, for_sale=True))
 
     for tag in product.color_tags.all():
-        related_prod = related_prod.union(related_prod, Product.objects.all().filter(color_tags=tag, for_sale=True))
+        related_prod = related_prod.union(Product.objects.all().filter(color_tags=tag, for_sale=True))
 
+    related_prod = related_prod.intersection(Product.objects.all().exclude(pid=product.pid))
     ctx = {
         'product': product,
         'sizes': sizes,

@@ -27,7 +27,7 @@ fileInput.addEventListener('change', function () {
 
 
 const  category_tags_container = document.getElementById('container-category-tags')
-const  color_tags_container = document.getElementById('container-color-tags')
+    const  color_tags_container = document.getElementById('container-color-tags')
 
 var add_tag_btn = category_tags_container.querySelector('#add-tag-btn')
 var rm_tag_btn = category_tags_container.querySelector('#rm-tag-btn')
@@ -54,5 +54,21 @@ rm_tag_btn.addEventListener('click', () => {
     const tags = color_tags_container.querySelectorAll('#tag')
     if (tags.length > 1) {
         tags[tags.length - 1].remove()
+    }
+})
+
+const success_modal = new bootstrap.Modal(document.getElementById('success-modal'), {
+    keyboard: false
+})
+
+const mf_modal = new bootstrap.Modal(document.getElementById('missing-fields-modal'), {
+    keyboard: false
+})
+
+document.addEventListener('DOMContentLoaded', ()=>{
+    if(document.URL.includes('success')){
+        success_modal.toggle()
+    }else if (document.URL.includes('missing_fields')){
+        mf_modal.toggle()
     }
 })

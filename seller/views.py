@@ -26,9 +26,13 @@ def seller_account(request):
                 # print(request.POST)
                 new_product = Product()
                 new_product.title = request.POST['title']
+                if int(request.POST['price']) < 0:
+                    print('error: '+request.POST['price'])
+                    raise IOError
+
                 new_product.price = request.POST['price']
                 new_product.description = request.POST['description']
-                sizes = json.dumps({
+                sizes = {
                     'sizes': [
                         {
                             'size': 'XS',
@@ -51,7 +55,13 @@ def seller_account(request):
                             'qty': request.POST['size-xl']
                         },
                     ]
-                })
+                }
+                for s in sizes['sizes']:
+                    if int(s['qty']) < 0:
+                        print('error: '+s['qty'])
+                        raise IOError
+                sizes = json.dumps(sizes)
+
                 new_product.available_sizes = sizes
                 for image_file in image_files:
                     sha256_hash = hashlib.sha256()
@@ -70,19 +80,19 @@ def seller_account(request):
                 new_product.save()
 
                 for cat_tag in request.POST.getlist('cat-tag'):
-                    cat_tag = str(cat_tag).lower()
+                    cat_tag = str(cat_tag).capitalize()
                     Tag.objects.get_or_create(name=cat_tag, type='cat')
                     new_product.category_tags.add(Tag.objects.get(name=cat_tag).id)
                 for color_tag in request.POST.getlist('color-tag'):
-                    color_tag = str(color_tag).lower()
+                    color_tag = str(color_tag).capitalize()
                     Tag.objects.get_or_create(name=color_tag, type='col')
                     new_product.color_tags.add(Tag.objects.get(name=color_tag).id)
 
                 new_product.save()
 
-                return render(request, template_name='add_product.html')
-            except:
-                return redirect('/account/seller#missing_fields')
+                return redirect('/account/seller/#success')
+            except :
+                return redirect('/account/seller/#missing_fields')
 
     else:
         raise exceptions.PermissionDenied()
@@ -138,7 +148,7 @@ def stats(request):
             stats.save()
 
         ctx = {
-            'stats':Stats.objects.all()
+            'stats': Stats.objects.all()
         }
 
         return render(request, template_name='stats.html', context=ctx)
