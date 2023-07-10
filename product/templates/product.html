@@ -177,28 +177,34 @@
         </div>
     </div>
     <div class="col-1"></div>
-    <div class="container row flex-row justify-content-center" >
-        <h3 class="col-auto w-75 mt-4">Articoli Correlati</h3>
-        <div class="col-auto w-75 border border-dark border-2 rounded-3"
-             style="background-color: #dae7ef;height: 250px;overflow-x: auto; overflow-y: hidden" id="suggested-item">
-            <div class="row d-flex flex-column" style="height: 100%; ">
-                {% for p in products %}
-                    <a href="/product/{{ p.pid }}" class="mt-2 text-decoration-none text-dark" style="max-width: 200px;">
-                        <div class="card">
-                            <img src="/static/images/{{ p.img1 }}" class="card-img-top" alt="...">
-                            <div class="card-body p-0 row d-flex flex-row justify-content-between">
-                                <p class="card-title col-auto p-0 ps-3">{{ p.title }}</p>
-                                <p class="col-auto p-0 text-end pe-3">{{ p.price }}€</p>
+    {% if products %}
+
+        <div class="container row flex-row justify-content-center">
+            <h3 class="col-auto w-75 mt-4">Articoli Correlati</h3>
+            <div class="col-auto w-75 border border-dark border-2 rounded-3"
+                 style="background-color: #dae7ef;height: 250px;overflow-x: auto; overflow-y: hidden"
+                 id="suggested-item">
+                <div class="row d-flex flex-column" style="height: 100%; ">
+                    {% for p in products %}
+                        <a href="/product/{{ p.pid }}" class="mt-2 text-decoration-none text-dark"
+                           style="max-width: 200px;">
+                            <div class="card">
+                                <img src="/static/images/{{ p.img1 }}" class="card-img-top" alt="...">
+                                <div class="card-body p-0 row d-flex flex-row justify-content-between">
+                                    <p class="card-title col-auto p-0 ps-3">{{ p.title }}</p>
+                                    <p class="col-auto p-0 text-end pe-3">{{ p.price }}€</p>
+                                </div>
                             </div>
-                        </div>
-                    </a>
-                {% endfor %}
+                        </a>
+                    {% endfor %}
 
 
+                </div>
             </div>
-        </div>
 
-    </div>
+        </div>
+    {% endif %}
+
     <style>
         #suggested-item::-webkit-scrollbar {
             width: 12px;

@@ -9,11 +9,31 @@ from cart.models import Cart, Product_in_Cart
 from checkout.models import Checkout
 from product.models import *
 from seller.models import Stats
-
-
+from app_stats.models import *
+# from Bolle.models import Bolla_dst
+from django.core import exceptions
 def dump_db_users():
     User.objects.all().delete()
 
+# def load_old_db():
+#     input = open('dst.json', 'r')
+#     input_json = ''
+#     for l in input.readlines():
+#         input_json += l
+#         # print(l)
+#     input_json = json.loads(input_json)
+#     for dst in input_json:
+#         new_dst = Bolla_dst()
+#         new_dst.name = dst['Username']
+#         new_dst.line1 = dst['Riga1']
+#         new_dst.line2 = dst['Riga2']
+#         new_dst.city = dst['Citta']
+#         new_dst.cap = dst['CAP']
+#         new_dst.province = dst['prov']
+#         new_dst.country = dst['Paese']
+#         new_dst.save()
+#         print(new_dst)
+#     input.close()
 
 def populate_product():
     Product.objects.all().delete()
@@ -368,3 +388,34 @@ def create_feedbacks():
                     feed.save()
                 except:
                     continue
+
+def staff_required(func):
+    def checK_staff(*args, **kwargs):
+        result = func(*args, **kwargs)
+        if args[0].user.is_staff:
+            return result
+        else:
+            raise exceptions.PermissionDenied()
+
+    return checK_staff
+
+def logging(func):
+    def log(*args, **kwargs):
+        result = func(*args, **kwargs)
+        request = args[0]
+        ip = request.META.get('REMOTE_ADDR')
+        if total_log.objects.all().count() == 0:
+            new_count = total_log()
+            new_count.count = 0
+            new_count.save()
+
+        count_log = total_log.objects.all().first()
+        count_log.count = count_log.count+1
+        count_log.save()
+        if not ip_log.objects.filter(ip=ip).exists():
+            new_ip = ip_log()
+            new_ip.ip = ip
+            new_ip.save()
+        return result
+
+    return log

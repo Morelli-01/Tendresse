@@ -5,13 +5,14 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as login_imported
 from django.contrib.auth import logout as logout_imported
+from Tendresse.init import logging as log
 import logging
-
 from cart.models import Cart
 
-
+@log
 def home(request):
     return render(request, template_name='home.html')
+
 def login(request):
     if request.user.is_authenticated:
         return redirect(to='/home#already_logged')
@@ -77,3 +78,6 @@ def logout(request):
     logout_imported(request)
     return redirect(to='/login#loggedout')
 
+@log
+def orari(request):
+    return render(request, template_name='orari.html')

@@ -37,11 +37,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'Bolle',
     'account',
     'product',
     'cart',
     'checkout',
-    'seller'
+    'seller',
+    'app_stats',
+    'bolle_vecchie'
 ]
 
 MIDDLEWARE = [
@@ -85,10 +88,20 @@ CHANNEL_LAYERS = {
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'tendresse',
+        'USER': 'root',
+        'PASSWORD': 'LuigiMorelli5!',
+        'HOST': 'localhost',  # O l'indirizzo IP del tuo database MySQL
+        'PORT': '3306',       # La porta di default per MySQL
     }
 }
 

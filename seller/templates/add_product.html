@@ -3,7 +3,36 @@
     <script src="/static/js/add-product.js" defer></script>
 {% endblock %}
 {% block content %}
-    <form class="" action="" method="POST"
+    <div class="modal fade" id="success-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-success" id=""> Prodotto aggiunto correttamente!
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="missing-fields-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-danger" id="">Errore! Inserire correttamente tutti i campi!
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <form class="" action="/account/seller/" method="POST"
           enctype="multipart/form-data">{% csrf_token %}
         <div class="row d-flex  mt-2 ms-2 justify-content-center">
 
@@ -102,9 +131,11 @@
             <div class="col-auto ms-0 d-flex flex-column mt-2 me-2 ms-md-2" id="container-category-tags">
                 <h6>Tag Categoria </h6>
                 <div class="row d-flex flex-row align-items-center mb-1" id="contaner-first-btn">
-                    <input type="text" placeholder="Tag" name="cat-tag" id="tag" style="width: 100px" class="col mb-1 me-1"
+                    <input type="text" placeholder="Tag" name="cat-tag" id="tag" style="width: 100px"
+                           class="col mb-1 me-1"
                            required>
-                    <button class="col btn btn-sm btn-outline-dark rounded-0 mb-1" type="button" id="rm-tag-btn" style="">
+                    <button class="col btn btn-sm btn-outline-dark rounded-0 mb-1" type="button" id="rm-tag-btn"
+                            style="">
                         <i class="fa-solid fa-minus col-md-auto" id="icon-upload-image"></i>
                     </button>
                 </div>
@@ -116,7 +147,8 @@
             <div class="col-auto ms-0 d-flex flex-column mt-2 " id="container-color-tags">
                 <h6>Tag Colore</h6>
                 <div class="row d-flex flex-row align-items-center mb-1" id="contaner-first-btn">
-                    <input type="text" placeholder="Tag" name="color-tag" id="tag" style="width: 100px" class="col mb-1 me-1"
+                    <input type="text" placeholder="Tag" name="color-tag" id="tag" style="width: 100px"
+                           class="col mb-1 me-1"
                            required>
                     <button class="col btn btn-sm btn-outline-dark rounded-0 mb-1" type="button" id="rm-tag-btn">
                         <i class="fa-solid fa-minus col-md-auto" id="icon-upload-image"></i>

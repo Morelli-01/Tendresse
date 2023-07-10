@@ -6,12 +6,14 @@ from django.db.models import QuerySet
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
+from Tendresse.init import staff_required
 from cart.models import Cart, Product_in_Cart
 from product.models import Product
 
 
 # Create your views here.
 
+@staff_required
 def cart(request):
     ctx = {
         'cart': '',
@@ -41,7 +43,7 @@ def cart(request):
 
     return render(request, template_name='cart.html', context=ctx)
 
-
+@staff_required
 def atc(request):
     if request.method == 'GET':
         raise exceptions.BadRequest("Method not allowed")
@@ -71,7 +73,7 @@ def atc(request):
 
     return HttpResponse(status=201)
 
-
+@staff_required
 def rfc(request):
     if request.method == 'GET':
         raise exceptions.BadRequest("Method not allowed")
@@ -88,7 +90,7 @@ def rfc(request):
 
     return HttpResponse(status=204)
 
-
+@staff_required
 def get_n_items(request):
     if request.method == 'GET':
         try:
@@ -98,7 +100,7 @@ def get_n_items(request):
         except:
             return HttpResponse('0')
 
-
+@staff_required
 def check_cart_validity(cart: Cart):
     # print(cart.validity.date())
     if cart.validity.date() < datetime.date.today():
@@ -108,7 +110,7 @@ def check_cart_validity(cart: Cart):
 
     return True
 
-
+@staff_required
 def check_size_availability(product):
     requested_qty = product['qty']
     requested_size = product['size']
@@ -121,7 +123,7 @@ def check_size_availability(product):
 
     return True
 
-
+@staff_required
 def fetch_cart(request):
     if request.user.is_authenticated:
         if Cart.objects.all().filter(user=request.user, checked_out=0).exists():

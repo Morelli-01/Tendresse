@@ -85,7 +85,6 @@ proceed_btn.addEventListener('click', () => {
     }
     indirizzo_modal.toggle()
 })
-
 function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {

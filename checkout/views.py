@@ -5,6 +5,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.core import exceptions
 
+from Tendresse.init import staff_required
 from account.models import Address
 from cart.models import Cart
 from checkout.models import Checkout
@@ -12,6 +13,7 @@ from product.models import Product
 
 
 # Create your views here.
+@staff_required
 @login_required
 def checkout_stage_1(request):
     if request.method == 'GET':
@@ -40,8 +42,8 @@ def checkout_stage_1(request):
         checkout.save()
         return render(request, template_name='checkout1.html')
 
-
-@login_required
+@staff_required
+@login_required()
 def checkout_stage_2(request):
     if not Checkout.objects.all().filter(cart__user=request.user, confirmed=0).exists():
         raise exceptions.RequestAborted('Before you have to complete checkout\'s step-1')

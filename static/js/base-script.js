@@ -29,11 +29,11 @@ document.addEventListener('resize', () => {
 })
 
 const n_prod = document.getElementById('n-prod')
-fetch('/cart/items/count').then(data => {
-    data.text().then(b => {
-        n_prod.textContent = b;
-    })
-})
+// fetch('/cart/items/count').then(data => {
+//     data.text().then(b => {
+//         n_prod.textContent = b;
+//     })
+// })
 
 function set_footer() {
     let h = document.querySelector('body>nav').offsetHeight + main_container.offsetHeight

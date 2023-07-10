@@ -24,10 +24,13 @@ urlpatterns = [
     path('login/', login, name='login'),
     path('register/', register, name='register'),
     path('logout/', logout, name='logout'),
+    path('orari/', orari, name='orari'),
     path('account/', include('account.urls')),
     path('product/', include('product.urls')),
     path('cart/', include('cart.urls')),
     path('checkout/', include('checkout.urls')),
+    path('bolle/', include('Bolle.urls')),
+    path('oldbolle/', include('bolle_vecchie.urls')),
 ]
-# dump_db_users()
-populate_product()
+# populate_product()
+# load_old_db()

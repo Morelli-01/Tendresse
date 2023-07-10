@@ -2,6 +2,7 @@ const main_div = document.getElementById('main-container')
 var position = 0;
 var widht = innerHeight - document.querySelector('nav').scrollHeight;
 const imgs = document.querySelectorAll('body>div>div>img')
+const footer = document.querySelector('footer')
 for (let i = 0; i < imgs.length; i++) {
     imgs[i].style.height = (widht).toString() + 'px'
     window.addEventListener('resize', () => {
@@ -11,6 +12,7 @@ for (let i = 0; i < imgs.length; i++) {
 
 async function handleWheel(event) {
     // console.log(event)
+
     const deltaY = event.deltaY;
     if (deltaY > 0) {
         document.body.style.overflowY = 'hidden'
@@ -67,6 +69,11 @@ async function handleWheel(event) {
         }
 
     }
+    if (position >= 3) {
+        footer.classList.remove('visually-hidden')
+    } else {
+        footer.classList.add('visually-hidden')
+    }
 }
 
 function handleScroll(event) {
@@ -87,6 +94,11 @@ function deactivateScroll() {
     // console.log('scroll deactivated')
 }
 
+function set_footer() {
+    footer.classList.add('position-absolute')
+    footer.style.top = (window.innerHeight - footer.clientHeight).toString() + 'px'
+    footer.classList.add('visually-hidden')
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log('window loaded')
@@ -104,9 +116,11 @@ window.addEventListener('resize', () => {
 
 window.addEventListener("wheel", handleWheel)
 
-const n_prod = document.getElementById('n-prod')
-fetch('/cart/items/count').then(data=>{
-    data.text().then(b =>{
-        n_prod.textContent = b;
-    })
-})
+// const n_prod = document.getElementById('n-prod')
+// fetch('/cart/items/count').then(data=>{
+//     data.text().then(b =>{
+//         n_prod.textContent = b;
+//     })
+// })
+
+set_footer()

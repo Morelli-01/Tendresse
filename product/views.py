@@ -4,11 +4,16 @@ import django.core.exceptions
 from django.db.models import QuerySet
 from django.shortcuts import render
 
+from Tendresse.init import staff_required
 from account.models import Feedback
 from .models import *
-
+from django.core import exceptions
 
 # Create your views here.
+
+
+
+@staff_required
 def products(request):
     if request.method == 'GET':
         if len(list(request.GET.keys())) > 0:
@@ -32,12 +37,12 @@ def products(request):
         }
         return render(request, template_name='products.html', context=ctx)
 
-
+@staff_required
 def product(request, pid):
     try:
         product = Product.objects.get(pid=pid, for_sale=True)
     except:
-        raise django.core.exceptions.BadRequest()
+        raise django.core.exceptions.BadRequest(format(f'Product with pid: {pid} doesn\'t exist or is not available for sale'))
     av_sizes = json.loads(product.available_sizes)['sizes']
     sizes = []
     for s in av_sizes:
@@ -45,11 +50,12 @@ def product(request, pid):
     # print(sizes)
     related_prod = Product.objects.none()
     for tag in product.category_tags.all():
-        related_prod = related_prod.union(related_prod, Product.objects.all().filter(category_tags=tag, for_sale=True))
+        related_prod = related_prod.union(Product.objects.all().filter(category_tags=tag, for_sale=True))
 
     for tag in product.color_tags.all():
-        related_prod = related_prod.union(related_prod, Product.objects.all().filter(color_tags=tag, for_sale=True))
+        related_prod = related_prod.union(Product.objects.all().filter(color_tags=tag, for_sale=True))
 
+    related_prod = related_prod.intersection(Product.objects.all().exclude(pid=product.pid))
     ctx = {
         'product': product,
         'sizes': sizes,
@@ -59,7 +65,7 @@ def product(request, pid):
 
     return render(request, template_name='product.html', context=ctx)
 
-
+@staff_required
 def products_ordered(request, type):
     if request.method == 'GET':
         results = Product.objects.none()
@@ -95,7 +101,7 @@ def products_ordered(request, type):
         }
         return render(request, template_name='products.html', context=ctx)
 
-
+@staff_required
 def filter_product(request):
     results_cat = Product.objects.all().filter(for_sale=True)
     results_col = Product.objects.all().filter(for_sale=True)
