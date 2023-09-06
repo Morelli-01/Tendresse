@@ -1,0 +1,238 @@
+{% extends 'basics/seller_panel_base.html' %}
+{% block other_head %}
+    <title>Crea Bolla</title>
+    <script src="/static/js/create-bolla-script.js" defer></script>
+{% endblock %}
+
+
+
+{% block content %}
+    <div class="modal fade" id="add-address" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header d-flex flex-column ">
+                    <h5 class="modal-title text-dark" id="staticBackdropLabel"> Aggiungi un indirizzo
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                            id="modal-close-btn"></button>
+                    <form class="mb-3 needs-validation" action=""
+                          method="">{% csrf_token %}
+                        <div class="form-row d-flex flex-row justify-content-center" style="margin-bottom: inherit">
+                            <div class="form-group col-md-12 ">
+                                <label for="name">Nome</label>
+                                <input type="text" class="form-control" id="name" name="name"
+                                       placeholder="Nome Cognome/Sociatà"
+                                       required>
+                            </div>
+
+                        </div>
+                        <div class="form-row d-flex flex-row justify-content-center" style="margin-bottom: inherit">
+                            <div class="form-group col-md-12">
+                                <label for="line1">Indirizzo/Linea 1</label>
+                                <input type="text" class="form-control" id="line1" name="line1"
+                                       placeholder="Via P. Vivarelli, 10" required>
+                            </div>
+                        </div>
+                        {#                        <div class="form-row d-flex flex-row justify-content-center" style="margin-bottom: inherit">#}
+                        {#                            <div class="form-group col-md-12">#}
+                        {#                                <label for="line2">Indirizzo/Linea 2</label>#}
+                        {#                                <input type="text" class="form-control" id="line2" name="line2"#}
+                        {#                                       placeholder="Appartamento, studio, piano...">#}
+                        {#                            </div>#}
+                        {#                        </div>#}
+                        <div class="form-row d-flex flex-row justify-content-center" style="margin-bottom: inherit">
+                            <div class="form-group col-md-5 me-3">
+                                <label for="city">Citta'</label>
+                                <input type="text" class="form-control" id="city" name="city" placeholder="Modena"
+                                       required>
+                            </div>
+                            <div class="form-group col-md-4">
+
+                                <label for="zip">CAP</label>
+                                <input type="text" class="form-control" id="zip" name="zip" required>
+
+                            </div>
+
+                        </div>
+                        <div class="form-row d-flex flex-row justify-content-center" style="margin-bottom: inherit">
+                            <div class="form-group col-md-5 me-3">
+                                <label for="province">Provincia(sigla)</label>
+                                <input type="text" class="form-control" id="province" name="province" placeholder="MO"
+                                       required>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="country">Paese</label>
+                                <input type="text" class="form-control" id="country" name="country" placeholder="Italia"
+                                       required>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-primary" id="add-addr-submit">Salva Indirizzo</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <form class="" action="" method="POST"
+          enctype="multipart/form-data">{% csrf_token %}
+        <div class="row d-flex flex-row justify-content-between me-2">
+            <legend class="col-auto">Crea Bolla</legend>
+            <div class="col-auto">
+                <div class="row">
+                    <button class="col-auto btn border pt-0 pb-0 ms-2 me-2 btn-outline-info" type="button" id="set-n-bolla-btn">
+                        Modifica numero-anno bolla
+                    </button>
+                    <div class="col-auto row border border-dark ps-0 pe-0 ms-2 rounded">
+                        {#                        <div class="col-auto pe-0">0</div>#}
+                        {#                        -#}
+                        {#                        <div class="col-auto ps-0">2023</div>#}
+                        <div class="col-auto p-0">
+                            <input type="number" class="pe-0" style="max-width: 40px;" value="0" name="number" id="number" readonly>
+                        </div>
+                        -
+                        <div class="col-auto p-0">
+                            <input type="number" class="ps-0" style="max-width: 60px;" value="2023" name="year" id="year" readonly>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <label for="data_bolla" class="form-label">Data creazione bolla:</label>
+        <input type="date" class="form-control mb-2" id="data_bolla" name="data_bolla" required>
+
+        <label for="dst" class="form-label">Destinatario:</label>
+        <select name="dst" id="dst" class="form-select mb-2" required>
+            <option value="" selected disabled>Scegli un'opzione</option>
+            {% for e in dst %}
+                <option value="{{ e.name }}" class="">{{ e.name }}</option>
+            {% endfor %}
+
+        </select>
+
+        <input type="checkbox" class="form-check-inline me-0 ms-1 " id="same_address" name="same_address">
+        <label for="same_address" class="form-label mb-2" id="same_address_label">Same address</label>
+
+
+        <div class="container p-0" id="prod_container">
+            <div class="container row d-flex d-inline align-content-start align-items-center m-0 p-0">
+                <div class="row d-flex align-content-start align-items-center">
+                    <h5 class="col-auto m-0">Merce</h5>
+
+                    <div class="col-auto p-0">
+                        <button type="button" class="col-auto btn btn-danger me-2" id="rm_prod"><i
+                                class="fa-solid fa-minus"></i>
+                        </button>
+                        <button type="button" class="col-auto btn btn-success" id="add_prod"><i
+                                class="fa-solid fa-plus"></i></button>
+                    </div>
+                </div>
+
+            </div>
+            <div class="container row d-flex align-items-end mt-2">
+                <div class="col-auto p-0 pe-1 ">
+                    <p class="m-0">1.</p>
+                </div>
+                <div class="col-md-3">
+                    <label for="descr0" class="form-label">Descrizione:</label>
+
+                    <select name="descr0" id="descr0" class=" form-select ps-0 pe-4" required>
+                        <option value="" selected disabled>Scegli un'opzione</option>
+                        <option value="Filato composizioni diverse">Filato composizioni diverse</option>
+                        <option value="Capi in teli composizioni diverse">Capi in teli composizioni diverse</option>
+                        <option value="Capi di maglieria donna">Capi di maglieria donna</option>
+                        <option value="Tessuto composizioni diverse">Tessuto composizioni diverse</option>
+                    </select>
+                </div>
+                <div class="col-md-2 ">
+                    <input type="text" class="form-control" id="qta0" name="qta0" placeholder="Qantità" required
+                           value="">
+                </div>
+                <div class="col-md-2">
+                    <input type="text" class="form-control" id="um0" name="um0" placeholder="Unità di misura" required
+                           value="">
+                </div>
+                <div class="col-md-3">
+                    <input type="text" class="form-control" id="note0" name="note0" placeholder="Note">
+                </div>
+            </div>
+
+
+        </div>
+
+        <label for="lavorazione" class="form-label mt-2">Lavorazioni da effettuare:</label>
+        <select name="lavorazione" id="lavorazione" class="form-select mb-2" required>
+            <option value="" selected disabled>Scegli un opzione</option>
+            <option value="Smacchinatura" >Smacchinatura</option>
+            <option value="Taglio">Taglio</option>
+            <option value="Confezione">Confezione</option>
+            <option value="Ricamo/Applicazione">Ricamo/Applicazione</option>
+            <option value="Da Trattare">Da Trattare</option>
+            <option value="Asole/Bottoni">Asole/Bottoni</option>
+            <option value="Stiro/Ripasso/Imbusto">Stiro/Ripasso/Imbusto</option>
+            <option value="Stampa">Stampa</option>
+        </select>
+
+        <label for="resp" class="form-label">Trasporto a cura del:</label>
+        <select name="resp" id="resp" class="form-select mb-2" required>
+            <option value="" selected disabled>Scegli un opzione</option>
+            <option value="mittente">Mittente</option>
+            <option value="destinatario">Destinatario</option>
+
+        </select>
+
+        <label for="data_trasporto" class="form-label">Data inizio trasporto:</label>
+        <input type="date" class="form-control mb-2" id="data_trasporto" name="data_trasporto">
+
+        <label for="aspetto" class="form-label">Aspetto esteriore dei beni:</label>
+        <input type="text" class="form-control mb-2" id="aspetto" name="aspetto" placeholder="---" required
+               value="visibile">
+        <div class="container-fluid d-flex justify-content-center">
+            <button type="submit" class=" btn btn-success mt-3 "> Crea Bolla</button>
+
+        </div>
+    </form>
+
+    <div class="container row d-flex align-content-start align-items-center mt-2 visually-hidden"
+         id="base_prod">
+        <div class="col-auto p-0 pe-1">
+            <p class="m-0" id="prod_n">*.</p>
+        </div>
+        <div class="col-md-3">
+
+            <select name="descr" id="descr" class="form-select ps-0 pe-4">
+                <option value="" selected disabled>Scegli un'opzione</option>
+                <option value="Filato composizioni diverse">Filato composizioni diverse</option>
+                <option value="Capi in teli composizioni diverse">Capi in teli composizioni diverse</option>
+                <option value="Capi di maglieria donna">Capi di maglieria donna</option>
+                <option value="Tessuto composizioni diverse">Tessuto composizioni diverse</option>
+            </select>
+        </div>
+        <div class="col-md-2 ">
+            <input type="text" placeholder="Qantità" class="form-control" id="qta" name="qta">
+        </div>
+        <div class="col-md-2">
+            <input type="text" placeholder="Unità di misura" class="form-control" id="um" name="um">
+        </div>
+        <div class="col-md-3">
+            <input type="text" placeholder="Note" class="form-control" id="note" name="note">
+        </div>
+    </div>
+    <div class="container-fluid row d-flex flex-column ms-2 mb-2 visually-hidden" id="alt-dst">
+        <div class="col-md-4 border  border-opacity-10 border-dark rounded-1 overflow-hidden shadow">
+            <p class="col mb-0 d-flex" id="alt-dst-label1">Nicola Morelli</p>
+            <p class="col mt-0 mb-0 d-flex" id="alt-dst-label2">Via Giacomo Puccini...</p>
+            <input type="text" name="alt-dst-name" id="alt-dst-name" class="visually-hidden">
+            <input type="text" name="alt-dst-line1" id="alt-dst-line1" class="visually-hidden">
+            <input type="text" name="alt-dst-line2" id="alt-dst-line2" class="visually-hidden">
+            <input type="text" name="alt-dst-city" id="alt-dst-city" class="visually-hidden">
+            <input type="text" name="alt-dst-zip" id="alt-dst-zip" class="visually-hidden">
+            <input type="text" name="alt-dst-province" id="alt-dst-province" class="visually-hidden">
+            <input type="text" name="alt-dst-country" id="alt-dst-country" class="visually-hidden">
+        </div>
+
+    </div>
+{% endblock %}
