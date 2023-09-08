@@ -81,7 +81,7 @@ public class publicDrawer {
         PDDocument document = new PDDocument();
         PDPage firstPage = new PDPage();
         document.addPage(firstPage);
-//        System.out.println(System.getProperty("user.dir")+'\\'+"images"+'\\'+"tendresseLogo.png");
+        System.out.println(System.getProperty("user.dir") + '\\' + "static" + '\\' + "images" + '\\' + "tendresseLogo.png");
         drawBollaDefault.addLogo(System.getProperty("user.dir") + '\\' + "static" + '\\' + "images" + '\\' + "tendresseLogo.png", document);
 //        drawBollaDefault.addLogo("/images/tendresseLogo.png", document);
         if (sameAddress) {

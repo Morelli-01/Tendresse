@@ -4,6 +4,8 @@ import random
 
 from django.contrib.auth.models import User
 
+from bolle_vecchie.models import *
+from Bolle.models import *
 from account.models import Address, Feedback
 from cart.models import Cart, Product_in_Cart
 from checkout.models import Checkout
@@ -12,8 +14,11 @@ from seller.models import Stats
 from app_stats.models import *
 # from Bolle.models import Bolla_dst
 from django.core import exceptions
+
+
 def dump_db_users():
     User.objects.all().delete()
+
 
 # def load_old_db():
 #     input = open('dst.json', 'r')
@@ -71,8 +76,8 @@ def create_users():
             User(first_name=name, last_name=surname, email=mail, username=mail, password=psw).save()
         except:
             continue
-    User(first_name='Nicola', last_name='Morelli', email='nicolamorelli@jemore.it', username='nicolamorelli@jemore.it', password='sudo', is_staff=True).save()
-
+    User(first_name='Nicola', last_name='Morelli', email='nicolamorelli@jemore.it', username='nicolamorelli@jemore.it',
+         password='sudo', is_staff=True).save()
 
 
 def create_product():
@@ -308,7 +313,6 @@ def create_cart():
             prod_in_cart.save()
             cart.products_in_cart.add(prod_in_cart)
 
-
         cart.checked_out = False
         cart.save()
 
@@ -324,7 +328,7 @@ def create_checkout():
         prezzo_finale = 0
         products = checkout.cart.products_in_cart
         for prod_in_cart in products.all():
-            prezzo_finale += prod_in_cart.product.price*prod_in_cart.qty
+            prezzo_finale += prod_in_cart.product.price * prod_in_cart.qty
         if checkout.ship_method == 'standard':
             prezzo_finale += 10
         checkout.total_price = float(str(prezzo_finale)[0:5])
@@ -342,8 +346,6 @@ def decrease_availability(cart: Cart):
     for prod_in_cart in products:
         qty_to_remove = prod_in_cart.qty
         size_to_remove = prod_in_cart.size
-
-
 
         pid = prod_in_cart.product.pid
         p = Product.objects.get(pid=pid)
@@ -389,6 +391,7 @@ def create_feedbacks():
                 except:
                     continue
 
+
 def staff_required(func):
     def checK_staff(*args, **kwargs):
         result = func(*args, **kwargs)
@@ -398,6 +401,7 @@ def staff_required(func):
             raise exceptions.PermissionDenied()
 
     return checK_staff
+
 
 def logging(func):
     def log(*args, **kwargs):
@@ -410,7 +414,7 @@ def logging(func):
             new_count.save()
 
         count_log = total_log.objects.all().first()
-        count_log.count = count_log.count+1
+        count_log.count = count_log.count + 1
         count_log.save()
         if not ip_log.objects.filter(ip=ip).exists():
             new_ip = ip_log()
@@ -419,3 +423,19 @@ def logging(func):
         return result
 
     return log
+
+
+def export_db():
+    with open('export_bolle_vecchie_bolle_old.txt', 'w') as file:
+        file.write('use tendress;\n')
+        for b in bolle_old.objects.all():
+            file.write("insert into bolle_vecchie_bolle_old (`numero`,`anno`) values('" + str(b.numero) + "','" + str(
+                b.anno) + "');\n")
+    with open('export_bolle_bolla_dst.txt', 'w') as file:
+        file.write('use tendress;\n')
+        for dst in Bolla_dst.objects.all():
+            file.write(
+                "INSERT INTO Bolle_bolla_dst (`id`,`name`,`line1`,`line2`,`city`,`province`,`zip`,`country`,`alt_dst`) VALUES('" + str(
+                    dst.id) + "','" + str(dst.name) + "','" + str(dst.line1) + "','" + str(dst.line2) + "','" + str(
+                    dst.city) + "','" + str(dst.province) + "','" + str(dst.zip) + "','" + str(
+                    dst.country) + "'," + str(dst.alt_dst) + ");\n")
