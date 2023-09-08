@@ -81,8 +81,9 @@ public class publicDrawer {
         PDDocument document = new PDDocument();
         PDPage firstPage = new PDPage();
         document.addPage(firstPage);
-        System.out.println(System.getProperty("user.dir") + '\\' + "static" + '\\' + "images" + '\\' + "tendresseLogo.png");
-        drawBollaDefault.addLogo(System.getProperty("user.dir") + '\\' + "static" + '\\' + "images" + '\\' + "tendresseLogo.png", document);
+        String pathSeparator = File.separator;
+        System.out.println(System.getProperty("user.dir") + pathSeparator + "static" + pathSeparator + "images" + pathSeparator + "tendresseLogo.png");
+        drawBollaDefault.addLogo(System.getProperty("user.dir") + '\\' + "static" + pathSeparator + "images" + pathSeparator + "tendresseLogo.png", document);
 //        drawBollaDefault.addLogo("/images/tendresseLogo.png", document);
         if (sameAddress) {
             drawTransportInfoSameAddress(num, document, data);
@@ -94,8 +95,8 @@ public class publicDrawer {
         drawFooter(document, respSpedizione, dataTrasp, aspetto);
         drawDestnatario(document, dst, sameAddress);
         createDir();
-        document.save(System.getProperty("user.dir") + '\\' + "static" + "\\" + "Bolle" + "\\" + num + "-" + year + ".pdf");
-        System.out.println(System.getProperty("user.dir") + '\\' + "static" + "\\" + "Bolle" + "\\" + num + "-" + year + ".pdf");
+        document.save(System.getProperty("user.dir") + pathSeparator + "static" + pathSeparator + "Bolle" + pathSeparator + num + "-" + year + ".pdf");
+        System.out.println(System.getProperty("user.dir") + pathSeparator + "static" + pathSeparator + "Bolle" + pathSeparator + num + "-" + year + ".pdf");
         document.close();
 //        dbConn.addBolla(new bollaSaved(Integer.parseInt(year), num));
 
