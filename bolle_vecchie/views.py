@@ -11,7 +11,7 @@ from bolle_vecchie.models import bolle_old
 
 @staff_required
 def get_file_url(request,number_year):
-    directory = "static\\OldBolle"
+    directory = "static"+os.path.sep+"OldBolle"
     # Cerca i file nella cartella
     response = HttpResponse('not_found')
     for filename in os.listdir(directory):
