@@ -97,7 +97,8 @@ def create_bolla(request):
                 bolla.dst2 = Bolla_dst.objects.all().get(name=request.POST['alt-dst-name'])
 
             print(bolla)
-            cmd_command = 'java -jar  C:\\Users\\nicol\Documents\djangoProjects\Tendresse\BollaDrawer\\target\BollaDrawer-1.0-SNAPSHOT.jar ' + "\"" + \
+            program_path = 'BollaDrawer' + os.path.sep + 'target' + os.path.sep + 'BollaDrawer-1.0-SNAPSHOT.jar'
+            cmd_command = 'java -jar  ' + program_path + ' ' + "\"" + \
                           bolla.to_json().replace("'", "`").replace("\"", "'") + "\""
             print(cmd_command)
             try:
@@ -249,7 +250,7 @@ def edit_bolla(request, number_year):
             (number, year) = str(number_year).split('-')
             bolla_to_del = Bolla.objects.get(number=number, year=year)
             print(bolla_to_del)
-            bolla_file_path = 'static/Bolle/' + str(number) + '-' + str(year) + '.pdf'
+            bolla_file_path = 'static' + os.path.sep + 'Bolle' + os.path.sep + str(number) + '-' + str(year) + '.pdf'
             try:
                 os.remove(bolla_file_path)
             except:
@@ -330,7 +331,8 @@ def edit_bolla(request, number_year):
                 bolla.dst2 = Bolla_dst.objects.all().get(name=request.POST['alt-dst-name'])
 
             print(bolla)
-            cmd_command = 'java -jar  C:\\Users\\nicol\Documents\djangoProjects\Tendresse\BollaDrawer\\target\BollaDrawer-1.0-SNAPSHOT.jar ' + "\"" + \
+            program_path = 'BollaDrawer' + os.path.sep + 'target' + os.path.sep + 'BollaDrawer-1.0-SNAPSHOT.jar'
+            cmd_command = 'java -jar  ' + program_path + ' ' + "\"" + \
                           bolla.to_json().replace("'", "`").replace("\"", "'") + "\""
             print(cmd_command)
             try:

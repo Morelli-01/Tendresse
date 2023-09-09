@@ -251,16 +251,16 @@ public class drawBollaDefault {
 
         contentStream.close();
     }
-    public static void main(String[] args) throws IOException {
-        PDDocument document = new PDDocument();
-        PDPage firstPage = new PDPage();
-        document.addPage(firstPage);
-        addLogo("C:\\Users\\nicol\\Desktop\\bolle\\tendresseLogo.png", document);
-        drawTransportInfo(0, document);
-        drawCausaleTrasporto("c/lavorazione in subfornitura", document);
-        drawMerce(13, document);
-        drawFooter(document);
-        document.save("C:\\Users\\nicol\\Desktop\\bolle\\bolla.pdf");
-        document.close();
-    }
+//     public static void main(String[] args) throws IOException {
+//         PDDocument document = new PDDocument();
+//         PDPage firstPage = new PDPage();
+//         document.addPage(firstPage);
+//         addLogo("C:\\Users\\nicol\\Desktop\\bolle\\tendresseLogo.png", document);
+//         drawTransportInfo(0, document);
+//         drawCausaleTrasporto("c/lavorazione in subfornitura", document);
+//         drawMerce(13, document);
+//         drawFooter(document);
+//         document.save("C:\\Users\\nicol\\Desktop\\bolle\\bolla.pdf");
+//         document.close();
+//     }
 }
