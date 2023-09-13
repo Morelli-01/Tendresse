@@ -41,8 +41,16 @@
                     <div class="col-3 me-0">
                         <div class="row d-flex flex-column">
                             <label for="search-bolla-year" class="p-0">Anno</label>
-                            <input type="text" id="search-bolla-year" class="border-0 border-bottom border-dark p-0"
-                                   style="max-width: 50px">
+                            <select name="search-bolla-year" id="search-bolla-year"
+                                    class="border-0 border-bottom border-dark p-0"
+                                    style="max-width: 60px; margin-top: 2px;">
+                                    {% for year in years %}
+                                        <option value="" class="pb-0">{{ year }}</option>
+                                    {% endfor %}
+
+                            </select>
+{#                            <input type="text" id="search-bolla-year" class="border-0 border-bottom border-dark p-0"#}
+{#                                   style="max-width: 50px">#}
                         </div>
                     </div>
                     <div class="col-2 p-0 d-flex align-items-end">

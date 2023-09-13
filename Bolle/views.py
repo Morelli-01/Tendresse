@@ -69,14 +69,23 @@ def create_bolla(request):
             bolla.dataTrasp = datetime.datetime.fromisoformat(request.POST['data_trasporto'])
             bolla.aspetto = request.POST['aspetto']
             bolla.dst = Bolla_dst.objects.get(name=request.POST['dst'])
-            if str(request.POST['number']) == '0':
-                if not Bolla.objects.all().exists():
-                    bolla.number = 0
-                else:
-                    last_bolla = Bolla.objects.all().order_by('number').last()
-                    bolla.number = int(last_bolla.number) + 1
+            bolla_number = request.POST['number']
+            bolla_year = request.POST['year']
+            for b in Bolla.objects.all().filter(year=int(bolla_year)):
+                if b.number == bolla_number:
+                    return redirect('/bolle/#already_exist')
 
-                bolla.year = datetime.datetime.fromisoformat(request.POST['data_trasporto']).year
+            if str(request.POST['number']) == '0':
+                if Bolla.objects.all().filter(year=request.POST['year']).exists():
+                    last_bolla = Bolla.objects.all().filter(year=request.POST['year']).order_by('number').last()
+                    bolla.number = int(last_bolla.number) + 1
+                elif bolle_old.objects.all().filter(anno=request.POST['year']).exists():
+                    last_bolla = bolle_old.objects.all().filter(anno=request.POST['year']).order_by('numero').last()
+                    bolla.number = int(last_bolla.numero) + 1
+                else:
+                    bolla.number = 1
+
+                bolla.year = int(request.POST['year'])
             else:
                 bolla.number = int(request.POST['number'])
                 bolla.year = int(request.POST['year'])
@@ -203,11 +212,25 @@ def delete_dst(request, name):
 @login_required
 def dash(request):
     if request.user.is_staff:
+        years = []
+        for y in Bolla.objects.all():
+            print(years)
+            print(y.year)
+            print(years.__contains__([y.year]))
+            if not years.__contains__(y.year):
+                years.append(y.year)
+
+        for y in bolle_old.objects.all():
+            if years.__contains__(str(y.anno)):
+                years.append(y.anno)
+
+        print(years)
         if request.method == 'GET':
             ctx = {
-                'bolle': Bolla.objects.all().order_by('number'),
+                'bolle': Bolla.objects.all().order_by('year', 'number'),
                 'old_bolle': bolle_old.objects.all().order_by('anno', 'numero'),
-                'dsts': Bolla_dst.objects.all()
+                'dsts': Bolla_dst.objects.all(),
+                'years': years
             }
             return render(request, template_name='dashboard.html', context=ctx)
 
