@@ -22,16 +22,16 @@ public class publicDrawer {
     private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private static String path = System.getProperty("user.dir") + System.getProperty("file.separator") + "Bolle";
 
-    public void saveBollaFromJson(String json) {
-        Gson gson = new Gson();
-        Bolla bolla = gson.fromJson(json, Bolla.class);
-        saveBollaAdapter(bolla);
-    }
+//    public void saveBollaFromJson(String json) {
+//        Gson gson = new Gson();
+//        Bolla bolla = gson.fromJson(json, Bolla.class);
+//        saveBollaAdapter(bolla);
+//    }
 
-    public void saveBollaAdapter(Bolla bolla) {
+    public void saveBollaAdapter(Bolla bolla, String save_path) {
         try {
             this.saveBolla(bolla.data, bolla.descrizioni, bolla.qta, bolla.um, bolla.note, bolla.lavorazione, bolla.respSpedizione,
-                    bolla.dataTrasp, bolla.aspetto, bolla.dst, bolla.sameAddress, bolla.dst2, bolla.number, bolla.year);
+                    bolla.dataTrasp, bolla.aspetto, bolla.dst, bolla.sameAddress, bolla.dst2, bolla.number, bolla.year, save_path);
         } catch (IOException | SQLException e) {
             throw new RuntimeException(e);
         }
@@ -40,7 +40,7 @@ public class publicDrawer {
     public void saveBolla(String data,
                           String[] descrizioni, String[] qta, String[] um, String[] note, String lavorazione,
                           String respSpedizione, String dataTrasp, String aspetto, destinatario dst, boolean sameAddress,
-                          String[] dst2, String number, String year) throws IOException, SQLException {
+                          String[] dst2, String number, String year, String save_path) throws IOException, SQLException {
 
         String anno = data.substring(6);
         if (year.equals("")) {
@@ -82,8 +82,8 @@ public class publicDrawer {
         PDPage firstPage = new PDPage();
         document.addPage(firstPage);
         String pathSeparator = File.separator;
-        System.out.println(System.getProperty("user.dir") + pathSeparator + "static" + pathSeparator + "images" + pathSeparator + "tendresseLogo.png");
-        drawBollaDefault.addLogo(System.getProperty("user.dir") + pathSeparator + "static" + pathSeparator + "images" + pathSeparator + "tendresseLogo.png", document);
+        System.out.println(pathSeparator + "static" + pathSeparator + "images" + pathSeparator + "tendresseLogo.png");
+        drawBollaDefault.addLogo(pathSeparator + "static" + pathSeparator + "images" + pathSeparator + "tendresseLogo.png", document);
 //        drawBollaDefault.addLogo("/images/tendresseLogo.png", document);
         if (sameAddress) {
             drawTransportInfoSameAddress(num, document, data);
@@ -95,8 +95,9 @@ public class publicDrawer {
         drawFooter(document, respSpedizione, dataTrasp, aspetto);
         drawDestnatario(document, dst, sameAddress);
         createDir();
-        document.save(System.getProperty("user.dir") + pathSeparator + "static" + pathSeparator + "Bolle" + pathSeparator + num + "-" + year + ".pdf");
-        System.out.println(System.getProperty("user.dir") + pathSeparator + "static" + pathSeparator + "Bolle" + pathSeparator + num + "-" + year + ".pdf");
+//        document.save(System.getProperty("user.dir") + pathSeparator + "static" + pathSeparator + "Bolle" + pathSeparator + num + "-" + year + ".pdf");
+        document.save(save_path + pathSeparator + "Bolle" + pathSeparator + num + "-" + year + ".pdf");
+        System.out.println(save_path + pathSeparator + "Bolle" + pathSeparator + num + "-" + year + ".pdf");
         document.close();
 //        dbConn.addBolla(new bollaSaved(Integer.parseInt(year), num));
 
@@ -448,10 +449,11 @@ public class publicDrawer {
 //            System.out.println(args[i]);
 //        }
         Bolla bolla = gson.fromJson(args[0], Bolla.class);
+        String save_path = args[1];
 
         publicDrawer drawer = new publicDrawer();
         try {
-            drawer.saveBollaAdapter(bolla);
+            drawer.saveBollaAdapter(bolla, save_path);
             System.out.println("Bolla successfully created and saved");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
