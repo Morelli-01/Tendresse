@@ -6,7 +6,6 @@ import os
 
 from bolle_vecchie.models import bolle_old
 
-
 # Create your views here.
 
 @staff_required
