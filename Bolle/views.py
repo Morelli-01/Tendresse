@@ -12,6 +12,7 @@ import re
 
 from bolle_vecchie.models import *
 from Bolle.models import *
+from Tendresse.settings import BASE_PATH
 
 
 # Create your views here.
@@ -106,9 +107,10 @@ def create_bolla(request):
                 bolla.dst2 = Bolla_dst.objects.all().get(name=request.POST['alt-dst-name'])
 
             print(bolla)
-            program_path = 'BollaDrawer' + os.path.sep + 'target' + os.path.sep + 'BollaDrawer-1.0-SNAPSHOT.jar'
-            cmd_command = 'java -jar  ' + program_path + ' ' + "\"" + \
-                          bolla.to_json().replace("'", "`").replace("\"", "'") + "\""
+            program_path = BASE_PATH + os.path.sep + 'static' + os.path.sep + 'BollaDrawer' + os.path.sep + 'target' + os.path.sep + 'BollaDrawer-1.0-SNAPSHOT.jar'
+            cmd_command = 'java -jar  ' + program_path + " \"" + \
+                          bolla.to_json().replace("'", "`").replace("\"",
+                                                                    "'") + "\" " + " \"" + '/opt/Tendresse/static' + "\""
             print(cmd_command)
             try:
                 # Esegui il comando CMD
@@ -119,6 +121,7 @@ def create_bolla(request):
                 print(result.stdout)
 
             except subprocess.CalledProcessError as e:
+                print(os.getcwd())
                 print("Errore durante l'esecuzione del comando CMD:")
                 print(e)
                 print(e.stderr)
@@ -245,7 +248,7 @@ def delete_bolla(request, number_year):
             (number, year) = str(number_year).split('-')
             bolla_to_del = Bolla.objects.get(number=number, year=year)
             print(bolla_to_del)
-            bolla_file_path = 'static/Bolle/' + str(number) + '-' + str(year) + '.pdf'
+            bolla_file_path = BASE_PATH + os.path.sep + 'static/Bolle/' + str(number) + '-' + str(year) + '.pdf'
             try:
                 os.remove(bolla_file_path)
             except:
@@ -273,7 +276,7 @@ def edit_bolla(request, number_year):
             (number, year) = str(number_year).split('-')
             bolla_to_del = Bolla.objects.get(number=number, year=year)
             print(bolla_to_del)
-            bolla_file_path = 'static' + os.path.sep + 'Bolle' + os.path.sep + str(number) + '-' + str(year) + '.pdf'
+            bolla_file_path = BASE_PATH + os.path.sep + 'static/Bolle/' + str(number) + '-' + str(year) + '.pdf'
             try:
                 os.remove(bolla_file_path)
             except:
@@ -281,7 +284,7 @@ def edit_bolla(request, number_year):
             bolla_to_del.delete()
 
             for p in request.POST:
-                re.fullmatch('^note', p)
+                # re.fullmatch('^note', p)
                 if request.POST[p] == '' and re.fullmatch('^note.*', p) is None and p != 'alt-dst-line2':
                     raise exceptions.BadRequest()
 
@@ -326,14 +329,23 @@ def edit_bolla(request, number_year):
             bolla.dataTrasp = datetime.datetime.fromisoformat(request.POST['data_trasporto'])
             bolla.aspetto = request.POST['aspetto']
             bolla.dst = Bolla_dst.objects.get(name=request.POST['dst'])
-            if str(request.POST['number']) == '0':
-                if not Bolla.objects.all().exists():
-                    bolla.number = 0
-                else:
-                    last_bolla = Bolla.objects.all().order_by('number').last()
-                    bolla.number = int(last_bolla.number) + 1
+            bolla_number = request.POST['number']
+            bolla_year = request.POST['year']
+            for b in Bolla.objects.all().filter(year=int(bolla_year)):
+                if b.number == bolla_number:
+                    return redirect('/bolle/#already_exist')
 
-                bolla.year = datetime.datetime.fromisoformat(request.POST['data_trasporto']).year
+            if str(request.POST['number']) == '0':
+                if Bolla.objects.all().filter(year=request.POST['year']).exists():
+                    last_bolla = Bolla.objects.all().filter(year=request.POST['year']).order_by('number').last()
+                    bolla.number = int(last_bolla.number) + 1
+                elif bolle_old.objects.all().filter(anno=request.POST['year']).exists():
+                    last_bolla = bolle_old.objects.all().filter(anno=request.POST['year']).order_by('numero').last()
+                    bolla.number = int(last_bolla.numero) + 1
+                else:
+                    bolla.number = 1
+
+                bolla.year = int(request.POST['year'])
             else:
                 bolla.number = int(request.POST['number'])
                 bolla.year = int(request.POST['year'])
@@ -354,9 +366,10 @@ def edit_bolla(request, number_year):
                 bolla.dst2 = Bolla_dst.objects.all().get(name=request.POST['alt-dst-name'])
 
             print(bolla)
-            program_path = 'BollaDrawer' + os.path.sep + 'target' + os.path.sep + 'BollaDrawer-1.0-SNAPSHOT.jar'
-            cmd_command = 'java -jar  ' + program_path + ' ' + "\"" + \
-                          bolla.to_json().replace("'", "`").replace("\"", "'") + "\""
+            program_path = BASE_PATH + os.path.sep + 'static' + os.path.sep + 'BollaDrawer' + os.path.sep + 'target' + os.path.sep + 'BollaDrawer-1.0-SNAPSHOT.jar'
+            cmd_command = 'java -jar  ' + program_path + " \"" + \
+                          bolla.to_json().replace("'", "`").replace("\"",
+                                                                    "'") + "\" " + " \"" + '/opt/Tendresse/static' + "\""
             print(cmd_command)
             try:
                 # Esegui il comando CMD
@@ -367,10 +380,12 @@ def edit_bolla(request, number_year):
                 print(result.stdout)
 
             except subprocess.CalledProcessError as e:
+                print(os.getcwd())
                 print("Errore durante l'esecuzione del comando CMD:")
                 print(e)
                 print(e.stderr)
             print(bolla)
+
             try:
                 bolla.save()
             except django.db.utils.IntegrityError as e:

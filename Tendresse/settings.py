@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-^49s%(0h^slj&_*dtrrfj%7g*ilvs$&3#gwry(-3=3l%#1-t=e'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -98,7 +98,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'tendresse',
-        'USER': 'root',
+        'USER': 'nicola',
         'PASSWORD': 'LuigiMorelli5!',
         'HOST': 'localhost',  # O l'indirizzo IP del tuo database MySQL
         'PORT': '3306',       # La porta di default per MySQL
@@ -150,3 +150,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 APPEND_SLASH = True
 LOGIN_URL = '/login'
 DJANGO_SETTING_MODULE = 'Tendresse.settings'
+BASE_PATH = '/opt/Tendresse'

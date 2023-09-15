@@ -34,4 +34,4 @@ urlpatterns = [
 ]
 # populate_product()
 # load_old_db()
-export_db()
+#export_db()

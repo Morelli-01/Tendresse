@@ -5,23 +5,25 @@ from Tendresse.init import staff_required
 import os
 
 from bolle_vecchie.models import bolle_old
+from Tendresse.settings import BASE_PATH
 
 
 # Create your views here.
 
 @staff_required
-def get_file_url(request,number_year):
-    directory = "static"+os.path.sep+"OldBolle"
+def get_file_url(request, number_year):
+    directory = BASE_PATH + os.path.sep + "static" + os.path.sep + "OldBolle"
     # Cerca i file nella cartella
     response = HttpResponse('not_found')
     for filename in os.listdir(directory):
-        if(filename.startswith(number_year)):
+        if (filename.startswith(number_year)):
             response = HttpResponse(filename)
 
     return response
 
+
 @staff_required
-def del_file(request,number_year):
+def del_file(request, number_year):
     (number, year) = str(number_year).split('-')
     if request.method == 'GET':
         try:

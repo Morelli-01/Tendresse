@@ -1,0 +1,13 @@
+use tendress;
+INSERT INTO Bolle_bolla_dst (`id`,`name`,`line1`,`line2`,`city`,`province`,`zip`,`country`,`alt_dst`) VALUES('26','Annali e Martinelli di Annali Manuel','Via Codebelli 11/b','','Concordia','MO','','Italia',False);
+INSERT INTO Bolle_bolla_dst (`id`,`name`,`line1`,`line2`,`city`,`province`,`zip`,`country`,`alt_dst`) VALUES('27','Capone Nicolino & attilio srl','via Claudio Tolomeo 20/7','','Carpi','MO','','Italia',False);
+INSERT INTO Bolle_bolla_dst (`id`,`name`,`line1`,`line2`,`city`,`province`,`zip`,`country`,`alt_dst`) VALUES('28','Confezioni Luca di Jin Yun','Via Torchio 271/1','','Soliera','Mo','','Italia',False);
+INSERT INTO Bolle_bolla_dst (`id`,`name`,`line1`,`line2`,`city`,`province`,`zip`,`country`,`alt_dst`) VALUES('29','DMV tessile','Via 25 Aprile, 8/B','','Motteggiana','MN','','Italia',False);
+INSERT INTO Bolle_bolla_dst (`id`,`name`,`line1`,`line2`,`city`,`province`,`zip`,`country`,`alt_dst`) VALUES('30','FAST DI IOVINO ANIELLO','via lago SCAFFAIOLO 7','','CARPI','MO','','ITALIA',False);
+INSERT INTO Bolle_bolla_dst (`id`,`name`,`line1`,`line2`,`city`,`province`,`zip`,`country`,`alt_dst`) VALUES('31','Girasole di Liu Qinghui','Via Carpi Ravarino 48','','LIMIDI DI SOLIERA','MO','','ITALIA',False);
+INSERT INTO Bolle_bolla_dst (`id`,`name`,`line1`,`line2`,`city`,`province`,`zip`,`country`,`alt_dst`) VALUES('32','Lavanderia Industriale','Via Lombardia 24','','Carpi','MO','','Italia',False);
+INSERT INTO Bolle_bolla_dst (`id`,`name`,`line1`,`line2`,`city`,`province`,`zip`,`country`,`alt_dst`) VALUES('33','Maglificion Zheng SRLS','Via Lombardia 29','','Carpi','MO','','Italia',False);
+INSERT INTO Bolle_bolla_dst (`id`,`name`,`line1`,`line2`,`city`,`province`,`zip`,`country`,`alt_dst`) VALUES('34','Saba SRL','Via pirani 34','','Casumaro','FE','','Italia',False);
+INSERT INTO Bolle_bolla_dst (`id`,`name`,`line1`,`line2`,`city`,`province`,`zip`,`country`,`alt_dst`) VALUES('35','Saccani & Setti s.n.c.','Via Toscanini,47','','Castelnovo di sotto','RE','','Italia',False);
+INSERT INTO Bolle_bolla_dst (`id`,`name`,`line1`,`line2`,`city`,`province`,`zip`,`country`,`alt_dst`) VALUES('36','Stireria Chiara di Wu xuezhen','Via Mare del nord 10','','Carpi','MO','','Italia',False);
+INSERT INTO Bolle_bolla_dst (`id`,`name`,`line1`,`line2`,`city`,`province`,`zip`,`country`,`alt_dst`) VALUES('37','Zampieri Mirko','Via Fontanelle,9 Fr Albaro','','Ronco All Adige','VR','','italy',False);
