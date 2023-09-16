@@ -3,8 +3,8 @@
     Cart
 {% endblock %}
 {% block head %}
-    <script src="/static/js/cart-script.js" defer></script>
-    <link rel="stylesheet" href="/static/css/my-style.css">
+    <script src="{% static 'js/cart-script.js' %}" defer></script>
+    <link rel="stylesheet" href="{% static 'css/my-style.css' %}">
     {% csrf_token %}
 {% endblock %}
 {% block content %}

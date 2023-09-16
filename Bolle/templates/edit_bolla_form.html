@@ -1,7 +1,8 @@
 {% extends 'basics/seller_panel_base.html' %}
 {% block other_head %}
     <title>Modifica Bolla</title>
-    <script src="/static/js/edit-bolla-script.js" defer></script>
+    {% load static %}
+    <script src="{% static 'js/edit-bolla-script.js' %}" defer></script>
 {% endblock %}
 
 

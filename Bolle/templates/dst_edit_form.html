@@ -1,8 +1,9 @@
 {% extends 'basics/seller_panel_base.html' %}
 {% block other_head %}
     <title>Aggiungi/Modifica destinario</title>
-    <script src="/static/js/dst-form-script.js" defer></script>
-    <script src="/static/js/edit-dst-form-script.js" defer></script>
+    {% load static %}
+    <script src="{% static 'js/dst-form-script.js' %}" defer></script>
+    <script src="{% static 'js/edit-dst-form-script.js' %}" defer></script>
 {% endblock %}
 {% block content %}
 

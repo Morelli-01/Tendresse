@@ -3,7 +3,7 @@
     Pagamento
 {% endblock %}
 {% block head %}
-    <script src="../../static/js/checkout2-script.js" defer></script>
+    <script src="{% static 'js/checkout2-script.js' %}" defer></script>
     <script src="https://kit.fontawesome.com/0adb953a4a.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     {% csrf_token %}

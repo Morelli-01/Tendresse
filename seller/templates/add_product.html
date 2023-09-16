@@ -1,6 +1,7 @@
 {% extends 'basics/seller_panel_base.html' %}
+{% load static %}
 {% block other_head %}
-    <script src="/static/js/add-product.js" defer></script>
+    <script src="{% static 'js/add-product.js' %}" defer></script>
 {% endblock %}
 {% block content %}
     <div class="modal fade" id="success-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
