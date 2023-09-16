@@ -12,9 +12,9 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -26,7 +26,6 @@ SECRET_KEY = 'django-insecure-^49s%(0h^slj&_*dtrrfj%7g*ilvs$&3#gwry(-3=3l%#1-t=e
 DEBUG = False
 
 ALLOWED_HOSTS = ['*']
-
 
 # Application definition
 
@@ -55,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.cache.CacheMiddleware',
 ]
 
 ROOT_URLCONF = 'Tendresse.urls'
@@ -62,7 +62,7 @@ ROOT_URLCONF = 'Tendresse.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR,"templates")]
+        'DIRS': [os.path.join(BASE_DIR, "templates")]
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -101,10 +101,9 @@ DATABASES = {
         'USER': 'nicola',
         'PASSWORD': 'LuigiMorelli5!',
         'HOST': 'localhost',  # O l'indirizzo IP del tuo database MySQL
-        'PORT': '3306',       # La porta di default per MySQL
+        'PORT': '3306',  # La porta di default per MySQL
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -124,7 +123,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
@@ -135,7 +133,6 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
@@ -151,3 +148,18 @@ APPEND_SLASH = True
 LOGIN_URL = '/login'
 DJANGO_SETTING_MODULE = 'Tendresse.settings'
 BASE_PATH = '/opt/Tendresse'
+
+# Abilita la cache per le risorse statiche
+CACHE_MIDDLEWARE_ALIAS = 'default'
+CACHE_MIDDLEWARE_SECONDS = 31536000  # 1 anno (numero di secondi)
+CACHE_MIDDLEWARE_KEY_PREFIX = 'static'
+
+# Specifica il comportamento della Cache-Control header per le risorse statiche
+STATICFILES_FINDERS = [
+    # ...
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+]
+
+# Configura il cache control per le risorse statiche
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
