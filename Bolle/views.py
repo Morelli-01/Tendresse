@@ -217,14 +217,12 @@ def dash(request):
     if request.user.is_staff:
         years = []
         for y in Bolla.objects.all():
-            print(years)
-            print(y.year)
-            print(years.__contains__([y.year]))
             if not years.__contains__(y.year):
                 years.append(y.year)
 
         for y in bolle_old.objects.all():
-            if years.__contains__(str(y.anno)):
+
+            if not years.__contains__(y.anno):
                 years.append(y.anno)
 
         print(years)

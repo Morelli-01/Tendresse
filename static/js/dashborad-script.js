@@ -199,16 +199,14 @@ down_btn.addEventListener('click', () => {
 
 dst_filter.addEventListener('change', (e) => {
 
-    console.log(e)
-    console.log()
     for (const bolla of new_bolle) {
         if (e.target.selectedOptions[0].value === 'all') {
             bolla.classList.remove('visually-hidden')
         } else {
             let dst_name = bolla.querySelector('dst').id
-            if (e.target.selectedOptions[0].value !== dst_name){
+            if (e.target.selectedOptions[0].value !== dst_name) {
                 bolla.classList.add('visually-hidden')
-            }else{
+            } else {
                 bolla.classList.remove('visually-hidden')
             }
 
@@ -216,3 +214,25 @@ dst_filter.addEventListener('change', (e) => {
         }
     }
 })
+
+search_input_year.addEventListener('change', (e) => {
+        for (const bolla of new_bolle) {
+            if (e.target.selectedOptions[0].value === 'all') {
+                bolla.classList.remove('visually-hidden')
+            } else if (bolla.id.includes(e.target.selectedOptions[0].value)) {
+                bolla.classList.remove('visually-hidden')
+            } else {
+                bolla.classList.add('visually-hidden')
+            }
+        }
+        for (const bolla of old_bolle) {
+            if (e.target.selectedOptions[0].value === 'all') {
+                bolla.classList.remove('visually-hidden')
+            } else if (bolla.id.includes(e.target.selectedOptions[0].value)) {
+                bolla.classList.remove('visually-hidden')
+            } else {
+                bolla.classList.add('visually-hidden')
+            }
+        }
+    }
+)
