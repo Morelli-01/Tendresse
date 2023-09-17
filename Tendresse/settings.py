@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-^49s%(0h^slj&_*dtrrfj%7g*ilvs$&3#gwry(-3=3l%#1-t=e'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -55,6 +55,9 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.cache.CacheMiddleware',
+    "django.middleware.cache.UpdateCacheMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.cache.FetchFromCacheMiddleware",
 ]
 
 ROOT_URLCONF = 'Tendresse.urls'
@@ -149,18 +152,30 @@ LOGIN_URL = '/login'
 DJANGO_SETTING_MODULE = 'Tendresse.settings'
 BASE_PATH = '/opt/Tendresse'
 
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+        "LOCATION": "my_cache_table",
+        "TIMEOUT": None,
+
+    }
+}
+
 # # Abilita la cache per le risorse statiche
-# CACHE_MIDDLEWARE_ALIAS = 'default'
-# CACHE_MIDDLEWARE_SECONDS = 31536000  # 1 anno (numero di secondi)
-# CACHE_MIDDLEWARE_KEY_PREFIX = 'static'
+CACHE_MIDDLEWARE_ALIAS = 'default'
+CACHE_MIDDLEWARE_SECONDS = 31536000  # 1 anno (numero di secondi)
+CACHE_MIDDLEWARE_KEY_PREFIX = 'static'
 #
 # # Specifica il comportamento della Cache-Control header per le risorse statiche
-# STATICFILES_FINDERS = [
-#     # ...
-#     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#     'django.contrib.staticfiles.finders.FileSystemFinder',
-# ]
+STATICFILES_FINDERS = [
+    # ...
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+]
 #
 # # Configura il cache control per le risorse statiche
-# STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True
