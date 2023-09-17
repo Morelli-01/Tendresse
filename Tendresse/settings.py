@@ -137,8 +137,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+STATIC_URL = 'staticfiles/'
+STATICFILES_DIR = [os.path.join(BASE_DIR, "static")]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -149,18 +149,18 @@ LOGIN_URL = '/login'
 DJANGO_SETTING_MODULE = 'Tendresse.settings'
 BASE_PATH = '/opt/Tendresse'
 
-# Abilita la cache per le risorse statiche
-CACHE_MIDDLEWARE_ALIAS = 'default'
-CACHE_MIDDLEWARE_SECONDS = 31536000  # 1 anno (numero di secondi)
-CACHE_MIDDLEWARE_KEY_PREFIX = 'static'
-
-# Specifica il comportamento della Cache-Control header per le risorse statiche
-STATICFILES_FINDERS = [
-    # ...
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-]
-
-# Configura il cache control per le risorse statiche
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+# # Abilita la cache per le risorse statiche
+# CACHE_MIDDLEWARE_ALIAS = 'default'
+# CACHE_MIDDLEWARE_SECONDS = 31536000  # 1 anno (numero di secondi)
+# CACHE_MIDDLEWARE_KEY_PREFIX = 'static'
+#
+# # Specifica il comportamento della Cache-Control header per le risorse statiche
+# STATICFILES_FINDERS = [
+#     # ...
+#     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+#     'django.contrib.staticfiles.finders.FileSystemFinder',
+# ]
+#
+# # Configura il cache control per le risorse statiche
+# STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
