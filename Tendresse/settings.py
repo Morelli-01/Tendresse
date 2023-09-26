@@ -54,7 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.cache.CacheMiddleware',
+    #'django.middleware.cache.CacheMiddleware',
 ]
 
 ROOT_URLCONF = 'Tendresse.urls'
@@ -164,3 +164,5 @@ BASE_PATH = '/opt/Tendresse'
 # # Configura il cache control per le risorse statiche
 # STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True
