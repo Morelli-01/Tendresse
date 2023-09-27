@@ -1,0 +1,173 @@
+/*.footer {*/
+/*    opacity: 0;*/
+/*    visibility: hidden;*/
+/*    transition: opacity 0.3s, visibility 0.3s linear 0.3s;*/
+/*}*/
+
+/*.footer.visible {*/
+/*    opacity: 1;*/
+/*    visibility: visible;*/
+/*    transition-delay: 0.5s;*/
+/*}*/
+
+/*.footer.hide {*/
+/*    opacity: 0;*/
+/*    visibility: hidden;*/
+/*    transition-delay: 0.5s;*/
+/*}*/
+
+/*#scrollable-div {*/
+/*    background-image: url('../images/img1.svg');*/
+/*    background-size: cover;*/
+/*    background-position: center;*/
+/*    -webkit-transition: background-image 0.4s cubic-bezier(0.4, 0, 1, 1);*/
+/*    !*transition-duration: 0ms; transform: translate3d(0px, -1806px, 0px);*!*/
+/*}*/
+
+/*.text-on-image-header {*/
+/*    font-size: 36px;*/
+/*    letter-spacing: 0.4px;*/
+/*    font-weight: 500;*/
+/*    line-height: 38px;*/
+/*    text-shadow: 1px 1px 5px black;*/
+/*    margin-bottom: 14px;*/
+/*    !*transition: background-color 0.5s ease-in-out;*!*/
+/*}*/
+
+/*.text-on-image-font {*/
+/*    font-size: 24px;*/
+/*    letter-spacing: 0.4px;*/
+/*    font-weight: 500;*/
+/*    line-height: 38px;*/
+/*    text-shadow: 1px 1px 5px black;*/
+/*    margin-bottom: 14px;*/
+/*    !*transition:  font-size 0.5s ease-in-out;*!*/
+/*}*/
+
+/*.description-container.visible {*/
+/*    visibility: visible;*/
+/*}*/
+
+/*.description-container.hidden {*/
+/*    visibility: hidden;*/
+/*}*/
+
+/*.account-title-text {*/
+/*    font-family: Helvetica Neue, HelveticaNeue, Helvetica, Segoe UI, Noto Sans, Roboto, Arial, Arial Unicode MS, sans-serif;*/
+/*    font-size: 14px;*/
+/*    font-weight: bold;*/
+/*}*/
+
+/*.account-text {*/
+/*    font-family: Helvetica Neue, HelveticaNeue, Helvetica, Segoe UI, Noto Sans, Roboto, Arial, Arial Unicode MS, sans-serif;*/
+/*    font-size: 14px;*/
+
+/*}*/
+
+/*@media (max-width: 576px) {*/
+/*    .text-on-image-font {*/
+/*        line-height: 20px;*/
+/*        font-size: 1rem;*/
+/*        text-shadow: 1px 1px 5px black;*/
+
+/*    }*/
+
+/*    .text-on-image-header {*/
+/*        line-height: 30px;*/
+/*        font-size: 1.4rem;*/
+/*        text-shadow: 1px 1px 5px black;*/
+/*    }*/
+
+/*    .description-container {*/
+/*        top: 5vh;*/
+/*    }*/
+/*}*/
+
+/*@media (max-width: 842px) and (min-width: 576px) {*/
+/*    .text-on-image-font {*/
+/*        line-height: 30px;*/
+/*        font-size: 1.4rem;*/
+/*        text-shadow: 1px 1px 5px black;*/
+/*    }*/
+
+/*    .text-on-image-header {*/
+/*        line-height: 30px;*/
+/*        font-size: 1.8rem;*/
+/*        text-shadow: 1px 1px 5px black;*/
+/*    }*/
+
+/*    .description-container {*/
+/*        top: 12vh;*/
+/*    }*/
+/*}*/
+
+/*@media (max-width: 1100px) and (min-width: 842px) {*/
+/*    .text-on-image-font {*/
+/*        line-height: 35px;*/
+/*        font-size: 1.4rem;*/
+/*        text-shadow: 1px 1px 5px black;*/
+/*    }*/
+
+/*    .text-on-image-header {*/
+/*        line-height: 30px;*/
+/*        font-size: 2.2rem;*/
+/*        text-shadow: 1px 1px 5px black;*/
+/*    }*/
+
+/*    .description-container {*/
+/*        top: 20vh;*/
+/*    }*/
+/*}*/
+
+/*@media (min-width: 1100px) {*/
+
+/*    .description-container {*/
+/*        top: 20vh;*/
+/*    }*/
+/*}*/
+
+
+/*@media (max-width: 576px) {*/
+/*    .footer {*/
+/*        line-height: 10px;*/
+/*        font-size: 0.6rem;*/
+/*    }*/
+/*}*/
+
+/*@media (max-width: 1000px) and (min-width: 576px) {*/
+/*    .footer {*/
+/*        line-height: 20px;*/
+/*        font-size: 1rem;*/
+/*    }*/
+/*}*/
+
+/*@media (max-width: 1700px) and (min-width: 1000px) {*/
+/*    .footer {*/
+/*        line-height: 20px;*/
+/*        font-size: 1.1rem;*/
+/*    }*/
+/*}*/
+
+
+@font-face {
+    font-family: 'Inter';
+    src: url('../font/Inter/Inter-VariableFont_slnt,wght.ttf'); /* sostituisci 'percorso/font/' con il percorso corretto del tuo file del font */
+}
+
+* {
+    font-family: Inter, serif;
+}
+
+#n-prod {
+    position: absolute;
+    top: 16px;
+    right: 11px;
+    width: 18px;
+    height: 18px;
+    border-radius: 100%;
+    background: #000;
+    color: #fff;
+    line-height: 18px;
+    text-align: center;
+}
+
